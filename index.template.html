@@ -446,8 +446,8 @@ function loadData(){
     initChips(); render(); initOverview();
   }
   $("newsList").innerHTML = spin;
-  /* 1. 内置数据（最高优先，构建时注入，永不失联） */
-  if(EMBEDDED_DATA){ done(EMBEDDED_DATA); return; }
+  /* 1. 内置数据（最高优先，构建时注入，永不失联）—— 秒开，随后后台静默拉取云端最新 */
+  if(EMBEDDED_DATA){ done(EMBEDDED_DATA); setTimeout(silentRefresh, 600); return; }
   var v = new Date().toISOString().slice(0,10);
   /* 2. 同目录文件 */
   fetch(DATA_URL + "?v=" + v, {cache:"no-store"})
@@ -467,6 +467,50 @@ function loadData(){
           .catch(function(){ tryCdn(i+1); });
       })(0);
     });
+}
+
+/* ===== 后台静默刷新：内嵌数据秒开后，静默拉取云端最新数据（有更新才提示） =====
+   通道优先级：GitHub API（无CDN缓存，数据最新）→ jsDelivr CDN（国内可达）→ raw.githubusercontent（兜底）
+   全部失败则静默保留内嵌数据，页面照常可用。 */
+function silentRefresh(){
+  if(!DATA || !DATA.records) return;
+  var curUpd = (DATA.meta && (DATA.meta.updated_at || DATA.meta.generated_at)) || "";
+  var curTot = (DATA.meta && DATA.meta.total) || DATA.records.length;
+  var tryCh = [
+    function(){   /* 通道1: GitHub API（contents 接口，base64 解码，无缓存） */
+      return fetch("https://api.github.com/repos/wszjj-165211/panyu-minzheng-news/contents/data/news_data.json?ref=main", {cache:"no-store"})
+        .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function(d){
+          var bin = atob(d.content), bytes = new Uint8Array(bin.length);
+          for(var k=0;k<bin.length;k++) bytes[k] = bin.charCodeAt(k);
+          return JSON.parse(new TextDecoder("utf-8").decode(bytes));
+        });
+    },
+    function(){   /* 通道2: jsDelivr CDN（国内可达，缓存约12小时） */
+      return fetch("https://cdn.jsdelivr.net/gh/wszjj-165211/panyu-minzheng-news@main/data/news_data.json?v=" + Date.now(), {cache:"no-store"})
+        .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); });
+    },
+    function(){   /* 通道3: raw.githubusercontent（最后兜底） */
+      return fetch("https://raw.githubusercontent.com/wszjj-165211/panyu-minzheng-news/main/data/news_data.json?v=" + Date.now(), {cache:"no-store"})
+        .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); });
+    }
+  ];
+  (function next(i){
+    if(i >= tryCh.length) return;   /* 全部失败：静默，不打扰 */
+    tryCh[i]()
+      .then(function(j){
+        if(!j || !j.records) throw new Error("bad");
+        var newUpd = (j.meta && (j.meta.updated_at || j.meta.generated_at)) || "";
+        var newTot = (j.meta && j.meta.total) || j.records.length;
+        if(newUpd === curUpd && newTot === curTot) return;   /* 无新数据：无感 */
+        DATA = j;
+        j.records.sort(function(a,b){ return sortKey(b.date) < sortKey(a.date) ? -1 : 1; });
+        $("metaInfo").textContent = newUpd ? "共 " + newTot + " 条 · 更新至 " + newUpd : "共 " + newTot + " 条";
+        initChips(); render(); initOverview();
+        toast(newUpd ? "✓ 已自动更新至最新（" + newUpd + "）" : "✓ 数据已更新至最新");
+      })
+      .catch(function(){ next(i+1); });
+  })(0);
 }
 
 /* ===== 分类体系 =====

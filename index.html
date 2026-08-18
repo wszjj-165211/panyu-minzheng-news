@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>番禺区民政新闻助手</title>
+<meta name="description" content="番禺区民政领域2026年官方新闻报道库，支持业务分类/主题标签检索、问答助手、统计概览，供民政系统文书部门撰写上报材料使用。">
+<meta property="og:title" content="番禺区民政新闻助手">
+<meta property="og:description" content="番禺区民政领域2026年官方新闻报道库 · 275条 · 分类检索 / 问答助手 / 统计概览">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://wszjj-165211.github.io/panyu-minzheng-news/logo.png">
+<style>
+:root{
+  --blue:#2B6CB0; --blue-d:#1E5AA8; --blue-l:#E8F1FA;
+  --bg:#F3F5F9; --card:#FFFFFF; --line:#E6EAF2;
+  --text:#2B2F38; --text2:#5B6372; --text3:#9AA1AF;
+  --green:#3E7C22; --danger:#C0392B; --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;overflow-x:hidden;word-wrap:break-word;overflow-wrap:break-word}
+img,svg,canvas{max-width:100%;height:auto}
+a{color:var(--blue);word-break:break-all}
+button{font-family:inherit}
+
+#app{max-width:720px;margin:0 auto;min-height:100vh;display:none;flex-direction:column}
+.app-show{display:flex !important}
+
+/* ===== 密码门 ===== */
+#gate{position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .box{width:100%;max-width:340px;background:#fff;border-radius:16px;padding:30px 24px;text-align:center;box-shadow:0 4px 24px rgba(30,90,168,.08)}
+#gate h1{font-size:19px;font-weight:500;color:var(--blue-d);margin-bottom:4px}
+#gate .sub{font-size:12px;color:var(--text3);margin-bottom:22px}
+#gate input{width:100%;height:46px;border:1px solid var(--line);border-radius:10px;padding:0 14px;font-size:16px;text-align:center;outline:none}
+#gate input:focus{border-color:var(--blue)}
+#gate .err{color:var(--danger);font-size:12px;margin-top:8px;min-height:18px}
+#gate .remember{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:12px;color:var(--text2);cursor:pointer;user-select:none}
+#gate .remember input{width:16px;height:16px;accent-color:var(--blue);margin:0}
+#gate button{width:100%;height:46px;margin-top:10px;border:none;border-radius:10px;background:var(--blue);color:#fff;font-size:15px;cursor:pointer}
+#gate button:active{background:var(--blue-d)}
+#gate .tip{font-size:11px;color:var(--text3);margin-top:16px;line-height:1.6}
+
+/* ===== 下拉刷新 ===== */
+#pullWrap{position:relative;height:0;overflow:hidden;background:var(--bg);z-index:25}
+#pullWrap .pull-inner{position:absolute;left:0;right:0;top:0;height:56px;display:flex;align-items:center;justify-content:center;gap:9px;color:var(--text3);font-size:12px}
+.pull-ic{width:22px;height:22px;border:2px solid var(--blue-l);border-top-color:var(--blue);border-right-color:var(--blue);border-radius:50%;transition:transform .15s ease}
+.pull-ic.arrow{transform:rotate(180deg)}
+.pull-ic.spin{animation:spin .7s linear infinite;border-top-color:var(--blue);border-right-color:var(--blue);border-bottom-color:var(--blue-l);border-left-color:var(--blue-l)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== 分享弹窗（海报模式） ===== */
+.hbtn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:9px;font-size:12px;padding:4px 11px;cursor:pointer;margin-left:6px;line-height:1.5}
+.hbtn:active{background:rgba(255,255,255,.35)}
+#refreshBtn{background:#fff;color:var(--blue-d);border:none;font-weight:700;box-shadow:0 1px 5px rgba(0,0,0,.22)}
+#refreshBtn:active{background:#E8F1FA}
+
+.modal-mask{position:fixed;inset:0;z-index:90;background:rgba(15,25,40,.58);display:none;align-items:center;justify-content:center;padding:16px}
+.modal-mask.show{display:flex}
+.modal{width:100%;max-width:340px;background:#fff;border-radius:18px;padding:18px 16px 16px;text-align:center;box-shadow:0 12px 44px rgba(0,0,0,.28);max-height:94vh;overflow-y:auto}
+.modal .m-title{font-size:16px;font-weight:600;color:var(--blue-d);margin-bottom:12px}
+.modal .posterBox{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:12px}
+.modal .posterBox img{display:block;width:100%;max-width:300px;margin:0 auto;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.modal .posterTip{font-size:13px;color:var(--text);font-weight:500;margin-bottom:4px}
+.modal .posterSub{font-size:12px;color:var(--text3);margin-bottom:10px;line-height:1.6}
+.modal .m-link input{width:100%;height:38px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:11px;color:var(--text2);background:var(--bg);outline:none}
+.modal .m-ops{display:flex;gap:10px;margin-top:12px}
+.modal .m-ops button{flex:1;height:42px;border:none;border-radius:10px;font-size:13px;cursor:pointer}
+.modal #copyUrlBtn{background:var(--blue);color:#fff}
+.modal #copyUrlBtn:active{background:var(--blue-d)}
+.modal #closeShare{background:#F1F3F8;color:var(--text2)}
+.modal .m-wechat{margin-top:12px;font-size:12px;color:#2E5B19;background:#F0F5EA;border-radius:10px;padding:10px 12px;line-height:1.7;text-align:left;border:1px solid #DCE8D4}
+.modal .m-wechat b{color:var(--blue-d)}
+
+/* ===== 顶栏 ===== */
+header{background:var(--blue-d);color:#fff;padding:14px 16px 12px;position:sticky;top:0;z-index:20;box-shadow:0 2px 8px rgba(30,90,168,.18)}
+header .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+header h1{font-size:17px;font-weight:500;letter-spacing:.5px}
+header .meta{font-size:11px;color:rgba(255,255,255,.75);white-space:nowrap}
+#searchBox{display:flex;margin-top:10px;background:rgba(255,255,255,.14);border-radius:10px;padding:0 12px;align-items:center}
+#searchBox .icon{color:rgba(255,255,255,.8);font-size:14px;margin-right:6px;flex-shrink:0}
+#searchBox input{flex:1;min-width:0;height:38px;background:none;border:none;outline:none;color:#fff;font-size:14px}
+#searchBox input::placeholder{color:rgba(255,255,255,.55)}
+#searchClear{color:rgba(255,255,255,.7);font-size:16px;padding:2px 6px;display:none;cursor:pointer;flex-shrink:0}
+
+/* ===== 主体 ===== */
+main{flex:1;overflow-y:auto;padding:12px 12px 66px;-webkit-overflow-scrolling:touch}
+
+#statBar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;padding:4px 4px 10px;font-size:12px;color:var(--text2)}
+#statBar b{color:var(--blue-d);font-weight:500}
+.statOps{display:flex;align-items:center;gap:8px}
+.statOps button{font-size:11px;border-radius:10px;padding:2px 10px;cursor:pointer;height:24px;line-height:1}
+#copyAllBtn{color:var(--blue-d);background:var(--blue-l);border:1px solid var(--blue)}
+#copyAllBtn:active{background:var(--blue-d);color:#fff}
+#exportBtn{color:var(--green);background:#F0F4EA;border:1px solid var(--green)}
+#exportBtn:active{background:var(--green);color:#fff}
+#favBtn{color:#8A5A00;background:#FBF3E2;border:1px solid #D9A93C}
+#favBtn.on{background:#D9A93C;color:#fff}
+
+.filter-sec{margin-bottom:8px}
+.filter-sec .ft{font-size:12px;color:var(--text3);margin:10px 4px 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+
+/* ===== 筛选 chip（统一基础） ===== */
+.chip{padding:6px 12px;border-radius:15px;font-size:12px;border:1px solid var(--line);background:#fff;color:var(--text2);cursor:pointer;user-select:none;white-space:nowrap;line-height:1.4;transition:box-shadow .12s,transform .06s}
+.chip:active{transform:scale(.96)}
+.chip .n{opacity:.65;font-size:11px;margin-left:3px}
+.chip::before{content:"";display:none}
+
+/* 业务分类：选中态（✓ + 深色描边 + 实心数字）——内联背景色不会覆盖描边/对勾 */
+.chip.sel{box-shadow:0 0 0 2px var(--blue-d) inset;border-color:var(--blue-d);font-weight:600}
+.chip.sel::before{content:"✓ ";display:inline;font-weight:700}
+.chip.sel .n{background:var(--blue-d);color:#fff;border-radius:8px;padding:0 5px;opacity:1}
+
+/* 主题标签：选中态（蓝底白字 + ✓） */
+.chip.on{background:var(--blue-d);border-color:var(--blue-d);color:#fff;font-weight:600}
+.chip.on::before{content:"✓ ";display:inline;font-weight:700}
+.chip.on .n{color:#fff;opacity:.85}
+
+/* 清除筛选按钮 */
+#filterBar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+#filterBar .ft{margin:10px 4px 6px}
+#resetBtn{display:none;font-size:11px;color:var(--blue-d);background:var(--blue-l);border:1px solid var(--blue);border-radius:12px;padding:3px 10px;cursor:pointer;margin:8px 4px 0;flex-shrink:0}
+#resetBtn.show{display:inline-block}
+
+/* ===== 新闻卡片 ===== */
+.news{background:var(--card);border-radius:var(--radius);padding:12px 14px 12px 16px;margin-bottom:10px;border:1px solid var(--line);position:relative;overflow:hidden}
+.news .bar{position:absolute;left:0;top:0;bottom:0;width:4px}
+.news .top{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.news .date{font-size:11px;color:var(--text3);white-space:nowrap}
+.news .cat-tag{font-size:11px;padding:1px 9px;border-radius:9px;white-space:nowrap}
+.news .tag-plus{font-size:10px;color:var(--text3)}
+.news h3{font-size:15px;font-weight:500;line-height:1.5;margin-bottom:4px}
+.news .src{font-size:11px;color:var(--text3);margin-bottom:6px;word-break:break-all}
+.news .sum{font-size:13px;color:var(--text2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.news.open .sum{-webkit-line-clamp:unset;display:block}
+.news .note{margin-top:6px;font-size:11px;color:#B05A30;background:#FDF6EC;border-radius:6px;padding:4px 9px;display:none}
+.news .note.show{display:block}
+.news .ops{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.news .ops button{flex:1;min-width:84px;height:34px;border:none;border-radius:8px;font-size:12px;cursor:pointer}
+.news .btn-link{background:var(--blue-l);color:var(--blue-d)}
+.news .btn-copy{background:#F0F4EA;color:var(--green)}
+.news .btn-more{background:#F3F4F6;color:var(--text2)}
+.news .btn-link[disabled]{opacity:.4;cursor:default}
+mark{background:#FFE58F;color:#8C5A00;border-radius:2px;padding:0 1px}
+.empty{text-align:center;color:var(--text3);padding:50px 20px;font-size:13px}
+
+/* ===== 统计概览页 ===== */
+#ovView{display:none}
+.ov-wrap{max-width:720px;margin:0 auto;padding:12px 12px 80px}
+.ov-sec{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+.ov-sec h2{font-size:14px;font-weight:600;color:var(--blue-d);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.ov-sec h2 .upd{font-size:11px;color:var(--text3);font-weight:400}
+.ov-row{display:flex;align-items:center;margin-bottom:7px;font-size:12px;color:var(--text2)}
+.ov-row .nm{width:92px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ov-row .bar-bg{flex:1;background:#F1F3F8;border-radius:6px;height:18px;overflow:hidden;margin:0 8px;min-width:0}
+.ov-row .bar-fill{height:100%;border-radius:6px;min-width:4px;transition:width .35s ease}
+.ov-row .cnt{width:34px;text-align:right;color:var(--text);font-weight:500;flex-shrink:0}
+.ov-tags{display:flex;flex-wrap:wrap;gap:6px}
+.ov-tags .t{font-size:12px;padding:4px 10px;border-radius:13px;background:var(--blue-l);color:var(--blue-d)}
+.ov-tags .t b{font-weight:600}
+.ov-empty{color:var(--text3);font-size:12px;text-align:center;padding:14px 0}
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ov-num{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px;text-align:center}
+.ov-num .v{font-size:22px;font-weight:600;color:var(--blue-d)}
+.ov-num .l{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* ===== 常用检索收藏 ===== */
+.fav-item{display:flex;align-items:center;gap:8px;background:#FBF8F0;border:1px solid #EBD9B0;border-radius:10px;padding:8px 10px;margin-bottom:8px;font-size:12px}
+.fav-item .nm{flex:1;color:var(--text);min-width:0}
+.fav-item .nm .d{color:var(--text3);font-size:11px}
+.fav-item button{flex-shrink:0;border:none;border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer}
+.fav-use{background:#D9A93C;color:#fff}
+.fav-del{background:#F1F3F8;color:var(--text3)}
+
+/* ===== 底部导航 ===== */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:30;background:#fff;border-top:1px solid var(--line)}
+nav .wrap{max-width:720px;margin:0 auto;display:flex}
+nav button{flex:1;height:54px;background:none;border:none;font-size:12px;color:var(--text3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer}
+nav button .ic{font-size:18px;line-height:1}
+nav button.on{color:var(--blue-d)}
+
+/* ===== 问答页 ===== */
+#qaView{display:none}
+.qa-wrap{max-width:720px;margin:0 auto;padding:12px 12px 110px}
+.qa-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.qa-suggest .s{font-size:12px;padding:6px 12px;border-radius:15px;background:#fff;border:1px solid var(--line);color:var(--text2);cursor:pointer}
+.msg{display:flex;margin-bottom:12px}
+.msg .av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;margin-right:8px}
+.msg.bot .av{background:var(--blue)}
+.msg.user .av{background:#9CA3AF;margin-left:8px;order:2}
+.msg .bub{max-width:82%;background:#fff;border-radius:12px;padding:10px 13px;font-size:13px;line-height:1.7;border:1px solid var(--line);min-width:0}
+.msg.user{flex-direction:row-reverse}
+.msg.user .bub{background:var(--blue-d);color:#fff;border:none}
+.msg.user .bub a{color:#BBD8F5}
+.qa-item{padding:9px 0;border-bottom:1px dashed var(--line)}
+.qa-item:last-child{border-bottom:none}
+.qa-item .t{font-weight:500;font-size:13px;line-height:1.5}
+.qa-item .m{font-size:12px;color:var(--text2);margin-top:3px}
+.qa-item .d{font-size:11px;color:var(--text3);margin-top:3px}
+.qa-input{position:fixed;bottom:54px;left:0;right:0;z-index:30;background:#fff;border-top:1px solid var(--line);padding:8px 12px}
+.qa-input .wrap{max-width:720px;margin:0 auto;display:flex;gap:8px}
+.qa-input input{flex:1;min-width:0;height:42px;border:1px solid var(--line);border-radius:21px;padding:0 16px;font-size:14px;outline:none}
+.qa-input input:focus{border-color:var(--blue)}
+.qa-input button{width:66px;height:42px;border:none;border-radius:21px;background:var(--blue);color:#fff;font-size:14px;cursor:pointer;flex-shrink:0}
+.qa-input button:active{background:var(--blue-d)}
+
+/* ===== 响应式增强：电脑端(≥768px) ===== */
+@media (min-width:768px){
+  body{font-size:15px}
+  header{padding:18px 24px 14px}
+  header h1{font-size:20px}
+  main{padding:18px 24px 80px}
+  .news{padding:16px 20px 16px 22px;margin-bottom:12px;border-radius:14px}
+  .news h3{font-size:16px}
+  .news .sum{font-size:14px}
+  .chip{font-size:13px;padding:7px 14px}
+  .news .ops button{height:36px;font-size:13px}
+  #searchBox input{height:42px}
+  .qa-wrap{padding:18px 24px 120px}
+  .msg .bub{font-size:14px;max-width:70%}
+  .qa-input input{height:44px}
+  .qa-input button{height:44px}
+  nav button{height:56px}
+}
+@media (min-width:1100px){
+  #app{max-width:860px}
+  nav .wrap{max-width:860px}
+  .qa-wrap{max-width:860px}
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <h1>番禺区民政新闻助手</h1>
+    <div class="sub">内部工作助手 · 请输入访问密码</div>
+    <input id="pw" type="password" placeholder="访问密码" autocomplete="current-password">
+    <div class="err" id="pwErr"></div>
+    <label class="remember"><input type="checkbox" id="pwRemember" checked> 记住密码，下次自动进入</label>
+    <button id="pwBtn">进 入</button>
+    <div class="tip">供番禺区民政系统文书部门<br>撰写上报信息时快速检索使用</div>
+  </div>
+</div>
+
+<div id="app">
+  <div id="pullWrap"><div class="pull-inner"><div class="pull-ic" id="pullIc"></div><span id="pullText">下拉刷新</span></div></div>
+  <header>
+    <div class="row">
+      <h1>番禺区民政新闻助手</h1>
+      <span class="meta"><span id="metaInfo"></span><button id="refreshBtn" class="hbtn" title="刷新数据">↻ 刷新</button><button id="shareBtn" class="hbtn" title="分享给同事">⤴ 分享</button></span>
+    </div>
+    <div id="searchBox">
+      <span class="icon">⌕</span>
+      <input id="kw" placeholder="搜索标题 / 摘要 / 来源，如：养老、慈善社区、520颁证">
+      <span id="searchClear">×</span>
+    </div>
+  </header>
+
+  <main id="newsView">
+    <div class="filter-sec">
+      <div id="filterBar">
+        <div class="ft">业务分类（单选）</div>
+        <button id="resetBtn">清除筛选</button>
+      </div>
+      <div class="chips" id="catChips"></div>
+      <div class="ft">主题标签（可多选，叠加筛选）</div>
+      <div class="chips" id="tagChips"></div>
+      <div class="ft">月份（可多选，叠加筛选）</div>
+      <div class="chips" id="monthChips"></div>
+    </div>
+    <div id="statBar"><span id="statText"></span><span class="statOps"><span id="sortText">按发布日期倒序</span><button id="favBtn" title="收藏当前筛选组合">☆ 收藏</button><button id="exportBtn" title="导出当前筛选结果为CSV">导出CSV</button><button id="copyAllBtn">复制全部</button></span></div>
+    <div id="newsList"></div>
+  </main>
+
+  <div id="qaView">
+    <div class="qa-wrap">
+      <div class="qa-suggest" id="qaSuggest"></div>
+      <div id="qaMsgs"></div>
+    </div>
+    <div class="qa-input">
+      <div class="wrap">
+        <input id="qaIn" placeholder="问：5月有哪些养老新闻？慈善社区我先行进展？">
+        <button id="qaBtn">发送</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="ovView">
+    <div class="ov-wrap" id="ovWrap"></div>
+  </div>
+
+  <nav>
+    <div class="wrap">
+      <button class="on" id="tabNews"><span class="ic">▤</span>新闻检索</button>
+      <button id="tabQa"><span class="ic">◉</span>问答助手</button>
+      <button id="tabOv"><span class="ic">▦</span>统计概览</button>
+    </div>
+  </nav>
+</div>
+
+<!-- ===== 分享弹窗 ===== -->
+<div id="shareModal" class="modal-mask">
+  <div class="modal">
+    <div class="m-title">分享给同事 / 发到微信群</div>
+    <div class="posterBox">
+      <img src="share_poster.png" alt="番禺区民政新闻助手分享海报" id="posterImg">
+    </div>
+    <div class="posterTip">长按二维码图片 → 保存到相册 → 发送给朋友</div>
+    <div class="posterSub">对方收到图片后，可长按识别图中的二维码直接进入应用</div>
+    <div class="m-link"><input id="shareUrl" readonly onclick="this.select()"></div>
+    <div class="m-ops">
+      <button id="copyUrlBtn">复制链接</button>
+      <button id="closeShare">关 闭</button>
+    </div>
+    <div class="m-wechat" id="wxTip" style="display:none">
+      <b>微信内转发小提示：</b><br>
+      你也可以直接点击本页右上角「···」→「转发给朋友」，但微信可能会显示为普通链接（受服务器抓取限制）。<b>最稳妥、最显眼的转发方式：保存上方海报图片，再发到群里。</b>
+    </div>
+  </div>
+</div>
+
+<script>
+var PASSWORD = "pymz2026";
+var DATA_URL = "data/news_data.json";
+var STORAGE_KEY = "mz_news_pw_ok";
+var FAV_KEY = "mz_news_favs_v1";
+var DATA = null;
+var curCat = "全部", curMonths = [], curTags = [], kw = "";
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function sortKey(d){ return (d||"").replace(/[^\d-]/g,"") || "0000"; }
+function getMonthKey(r){ var m=(r.date||"").match(/^(\d{4})-(\d{2})/); return m ? m[1]+"-"+m[2] : ""; }
+function monthLabel(mk){ return mk.replace(/^\d{4}-0?/,"")+"月"; }
+/* 基础匹配：跳过指定维度后判断 r 是否命中当前筛选（用于交叉计数） */
+function baseMatch(r, skipCat, skipMonths, skipTags){
+  if(!skipCat && curCat!=="全部" && r.category!==curCat) return false;
+  if(!skipMonths && curMonths.length){
+    var mk = getMonthKey(r);
+    if(mk && curMonths.indexOf(mk)<0) return false;
+  }
+  if(!skipTags){
+    for(var i=0;i<curTags.length;i++){ if(!tagHit(r,curTags[i])) return false; }
+  }
+  return true;
+}
+
+/* ===== 密码门 ===== */
+$("pwBtn").onclick = function(){
+  if($("pw").value === PASSWORD){
+    try{
+      if($("pwRemember").checked) localStorage.setItem(STORAGE_KEY,"1");
+      else localStorage.removeItem(STORAGE_KEY);
+    }catch(e){}
+    enter();
+  } else {
+    $("pwErr").textContent = "密码不正确，请重试";
+    $("pw").value = ""; $("pw").focus();
+  }
+};
+$("pw").addEventListener("keydown", function(e){ if(e.key==="Enter") $("pwBtn").click(); });
+function enter(){ $("gate").style.display="none"; $("app").className="app-show"; }
+try{ if(localStorage.getItem(STORAGE_KEY)==="1") enter(); }catch(e){}
+
+/* ===== 数据加载 ===== */
+function loadData(){
+  $("newsList").innerHTML = '<div class="empty" style="padding:50px 0"><div style="width:26px;height:26px;border:3px solid var(--blue-l);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>正在加载新闻数据，请稍候…</div>';
+  var v = new Date().toISOString().slice(0,10);
+  fetch(DATA_URL + "?v=" + v, {cache:"no-store"})
+    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(j){
+      DATA = j;
+      j.records.sort(function(a,b){ return sortKey(b.date) < sortKey(a.date) ? -1 : 1; });
+      var upd = j.meta && (j.meta.updated_at || j.meta.generated_at) || "";
+      if(upd) $("metaInfo").textContent = "共 " + j.meta.total + " 条 · 更新至 " + upd;
+      else $("metaInfo").textContent = "共 " + j.meta.total + " 条";
+      initChips(); render(); initOverview();
+    })
+    .catch(function(){ $("newsList").innerHTML = '<div class="empty">数据加载失败，请确认 news_data.json 与页面同目录。</div>'; });
+}
+
+/* ===== 分类体系 =====
+   一级「业务分类」：主分类，单选互斥（每篇唯一）
+   二级「主题标签」：跨业务议题，多选叠加（AND）
+   两套名称完全互补，不再重合。
+*/
+var MAIN_CATS = ["养老服务","社区慈善","社会救助","未成年人保护","婚姻登记","社会组织","基层治理","殡葬管理","区划地名","其他民政业务"];
+var TAG_ALIAS = {          /* extra_cats 原始值 → 规范标签名 */
+  "慈善":"慈善募捐","儿童":"困境儿童","残疾人":"残疾人精康","社工":"双百社工","殡葬":"殡葬服务"
+};
+var KW_TAGS = {            /* 用户重点议题 → 关键词探测（标题/摘要） */
+  "银发经济":["银发经济"],
+  "婚俗改革":["婚俗改革"],
+  "婚姻家庭辅导":["婚姻家庭辅导","婚姻辅导","家庭辅导","爱·家·圆"],
+  "甜蜜经济":["甜蜜经济"],
+  "集体颁证":["集体颁证","颁证"],
+  "智慧养老":["智慧养老","毫米波","雷达","适老化"],
+  "敬老助老":["敬老","长者饭堂","颐康中心","百岁","老年大学"],
+  "公益集市":["公益集市","义卖"],
+  "爱心妈妈":["爱心妈妈","结对帮扶"],
+  "慈善募捐":["募捐","捐赠","筹款","微心愿"]
+};
+var tagPool = {};   /* 规范标签 → 命中的新闻数 */
+
+function tagsOf(r){
+  var out = [];
+  var ex = (r.extra_cats||[]).map(function(t){ return TAG_ALIAS[t]||t; });
+  ex.forEach(function(t){ if(MAIN_CATS.indexOf(t)<0 && out.indexOf(t)<0) out.push(t); });
+  Object.keys(KW_TAGS).forEach(function(t){
+    if(out.indexOf(t)>=0) return;
+    var hay = (r.title+" "+(r.summary||"")).toLowerCase();
+    if(KW_TAGS[t].some(function(k){ return hay.indexOf(k.toLowerCase())>=0; })) out.push(t);
+  });
+  return out;
+}
+function tagHit(r,t){ return tagsOf(r).indexOf(t)>=0; }
+function buildTagPool(){
+  tagPool = {};
+  DATA.records.forEach(function(r){
+    tagsOf(r).forEach(function(t){ tagPool[t] = (tagPool[t]||0)+1; });
+  });
+}
+
+/* ===== 筛选 chips ===== */
+function initChips(){
+  var cats = ["全部"].concat(MAIN_CATS.filter(function(c){ return DATA.meta.cat_colors[c]; }));
+  $("catChips").innerHTML = cats.map(function(c){
+    var n = c==="全部" ? DATA.meta.total : DATA.records.filter(function(r){return r.category===c;}).length;
+    var st = c==="全部" ? "" : 'style="background:'+DATA.meta.cat_colors[c].bg+';color:'+DATA.meta.cat_colors[c].text+';border-color:'+DATA.meta.cat_colors[c].text+'44"';
+    return '<span class="chip'+(c===curCat?" sel":"")+'" data-c="'+esc(c)+'" '+st+'>'+esc(c)+'<span class="n">'+n+'</span></span>';
+  }).join("");
+
+  buildTagPool();
+  var ts = Object.keys(tagPool).sort(function(a,b){ return tagPool[b]-tagPool[a] || (a<b?-1:1); });
+  $("tagChips").innerHTML = ts.map(function(t){
+    return '<span class="chip'+(curTags.indexOf(t)>=0?" on":"")+'" data-t="'+esc(t)+'">'+esc(t)+'<span class="n">'+tagPool[t]+'</span></span>';
+  }).join("");
+
+  /* 月份 chips：从数据中提取 2026-01 ~ 2026-08 */
+  var months = [];
+  DATA.records.forEach(function(r){
+    var mk = getMonthKey(r);
+    if(mk && months.indexOf(mk)<0) months.push(mk);
+  });
+  months.sort();
+  $("monthChips").innerHTML = months.map(function(mk){
+    var n = DATA.records.filter(function(r){ return getMonthKey(r)===mk; }).length;
+    return '<span class="chip'+(curMonths.indexOf(mk)>=0?" on":"")+'" data-m="'+esc(mk)+'">'+esc(monthLabel(mk))+'<span class="n">'+n+'</span></span>';
+  }).join("");
+
+  $("catChips").onclick = function(e){
+    var t = e.target.closest(".chip"); if(!t) return;
+    curCat = t.getAttribute("data-c"); render();
+  };
+  $("tagChips").onclick = function(e){
+    var t = e.target.closest(".chip"); if(!t) return;
+    var tag = t.getAttribute("data-t");
+    var i = curTags.indexOf(tag);
+    if(i>=0) curTags.splice(i,1); else curTags.push(tag);
+    render();
+  };
+  $("monthChips").onclick = function(e){
+    var t = e.target.closest(".chip"); if(!t) return;
+    var mk = t.getAttribute("data-m");
+    var i = curMonths.indexOf(mk);
+    if(i>=0) curMonths.splice(i,1); else curMonths.push(mk);
+    render();
+  };
+}
+
+/* ===== 过滤 + 渲染 ===== */
+function filtered(){
+  var kwl = kw.trim().toLowerCase();
+  return DATA.records.filter(function(r){
+    if(!baseMatch(r,false,false,false)) return false;
+    if(!kwl) return true;
+    return (r.title+" "+(r.summary||"")+" "+(r.source||"")+" "+r.category+" "+r.extra_cats.join(" ")+" "+(r.note||"")).toLowerCase().indexOf(kwl) >= 0;
+  });
+}
+function hl(text){
+  if(!kw.trim()) return esc(text);
+  var t = esc(text);
+  try{
+    var re = new RegExp("("+kw.trim().replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");
+    return t.replace(re,"<mark>$1</mark>");
+  }catch(e){ return t; }
+}
+function selDesc(){
+  var p = [];
+  if(curCat!=="全部") p.push("分类："+curCat);
+  if(curMonths.length) p.push("月份："+curMonths.map(monthLabel).join("+"));
+  if(curTags.length) p.push("标签："+curTags.join("+"));
+  if(kw.trim()) p.push("关键词："+kw.trim());
+  return p.length ? "（"+p.join(" · ")+"）" : "";
+}
+function updateChipStates(){
+  /* 分类 chips：数量跟随 月份+标签 交叉，选中态刷新 */
+  $("catChips").querySelectorAll(".chip").forEach(function(c){
+    var cat = c.getAttribute("data-c");
+    c.classList.toggle("sel", cat===curCat);
+    var n = c.querySelector(".n"); if(!n) return;
+    var cnt = cat==="全部"
+      ? DATA.records.filter(function(r){ return baseMatch(r,true,false,false); }).length
+      : DATA.records.filter(function(r){ return r.category===cat && baseMatch(r,true,false,false); }).length;
+    n.textContent = cnt;
+  });
+  /* 标签 chips：数量跟随 分类+月份 交叉，重新渲染 + 选中态 */
+  var fp = {};
+  DATA.records.forEach(function(r){
+    if(!baseMatch(r,false,false,true)) return;
+    tagsOf(r).forEach(function(t){ fp[t] = (fp[t]||0)+1; });
+  });
+  var sortedTags = Object.keys(fp).sort(function(a,b){ return fp[b]-fp[a] || (a<b?-1:1); });
+  $("tagChips").innerHTML = sortedTags.map(function(t){
+    return '<span class="chip'+(curTags.indexOf(t)>=0?" on":"")+'" data-t="'+esc(t)+'">'+esc(t)+'<span class="n">'+fp[t]+'</span></span>';
+  }).join("");
+  /* 月份 chips：数量跟随 分类+标签 交叉，选中态刷新 */
+  $("monthChips").querySelectorAll(".chip").forEach(function(c){
+    var mk = c.getAttribute("data-m");
+    c.classList.toggle("on", curMonths.indexOf(mk)>=0);
+    var n = c.querySelector(".n"); if(!n) return;
+    var cnt = DATA.records.filter(function(r){ return getMonthKey(r)===mk && baseMatch(r,false,true,false); }).length;
+    n.textContent = cnt;
+  });
+}
+function render(){
+  var list = filtered();
+  updateChipStates();
+  syncFavBtn();
+  $("statText").innerHTML = "共 <b>"+list.length+"</b> 条 "+selDesc();
+  $("resetBtn").className = (curCat!=="全部"||curMonths.length||curTags.length||kw.trim()) ? "show" : "";
+  if(!list.length){ $("newsList").innerHTML = '<div class="empty">没有符合条件的报道<br>可点击上方「清除筛选」重新选择</div>'; return; }
+  $("newsList").innerHTML = list.map(function(r){
+    var cc = DATA.meta.cat_colors[r.category] || DATA.meta.cat_colors["其他民政业务"];
+    var extra = r.extra_cats && r.extra_cats.length ? r.extra_cats.map(function(c){return '<span class="tag-plus">+'+esc(c)+'</span>';}).join("") : "";
+    var note = r.note ? '<div class="note show">备注：'+esc(r.note)+'</div>' : "";
+    var linkBtn = (r.link && r.link.indexOf("http")===0)
+      ? '<button class="btn-link" data-url="'+esc(r.link)+'">查看原文 ↗</button>'
+      : '<button class="btn-link" disabled>无独立链接</button>';
+    return '<div class="news">'
+      + '<div class="bar" style="background:'+cc.text+'"></div>'
+      + '<div class="top"><span class="date">'+esc(r.date)+'</span><span class="cat-tag" style="background:'+cc.bg+';color:'+cc.text+'">'+esc(r.category)+'</span>'+extra+'</div>'
+      + '<h3>'+hl(r.title)+'</h3>'
+      + '<div class="src">'+esc(r.source)+'</div>'
+      + '<div class="sum">'+hl(r.summary||"")+'</div>'
+      + note
+      + '<div class="ops">'
+      + '<button class="btn-more">展开摘要</button>'
+      + linkBtn
+      + '<button class="btn-copy">复制条目</button>'
+      + '</div></div>';
+  }).join("");
+
+  $("newsList").querySelectorAll(".news").forEach(function(card){
+    card.querySelector(".btn-more").onclick = function(){
+      var open = card.classList.toggle("open");
+      this.textContent = open ? "收起摘要" : "展开摘要";
+    };
+    var lb = card.querySelector(".btn-link");
+    if(lb && lb.getAttribute("data-url")) lb.onclick = function(){ window.open(lb.getAttribute("data-url"),"_blank"); };
+    card.querySelector(".btn-copy").onclick = function(){ copyNews(card); };
+  });
+}
+
+/* ===== 清除筛选 ===== */
+$("resetBtn").onclick = function(){
+  curCat = "全部"; curMonths = []; curTags = [];
+  kw = ""; $("kw").value = ""; $("searchClear").style.display = "none";
+  render();
+};
+
+/* ===== 复制（兼容微信） ===== */
+function copyText(txt, doneCb, failCb){
+  var ta = document.createElement("textarea");
+  ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  var ok = false;
+  try{ ok = document.execCommand("copy"); }catch(e){}
+  document.body.removeChild(ta);
+  if(!ok && navigator.clipboard){ navigator.clipboard.writeText(txt).then(doneCb, failCb); return; }
+  ok ? doneCb() : failCb();
+}
+function copyNews(card){
+  var h3 = card.querySelector("h3").textContent;
+  var src = card.querySelector(".src").textContent;
+  var date = card.querySelector(".date").textContent;
+  var sum = card.querySelector(".sum").textContent;
+  var lb = card.querySelector(".btn-link");
+  var link = lb && lb.getAttribute("data-url") ? lb.getAttribute("data-url") : "无";
+  var txt = "【"+date+"】"+h3+"\n来源："+src+"\n摘要："+sum+"\n原文："+link;
+  copyText(txt, function(){ flash(card,"✓ 已复制"); }, function(){ flash(card,"长按手动复制"); });
+}
+function flash(card,msg){
+  var o = card.querySelector(".btn-copy");
+  o.textContent = msg;
+  setTimeout(function(){ o.textContent="复制条目"; },1600);
+}
+
+/* ===== 复制全部筛选结果 ===== */
+$("copyAllBtn").onclick = function(){
+  var list = filtered();
+  if(!list.length){ flashBtn(this,"无结果"); return; }
+  var txt = "番禺区民政领域官方报道（"+list.length+"条，筛选项"+selDesc()+"）\n\n" + list.map(function(r,i){
+    return (i+1)+". 【"+r.date+"】"+r.title+"\n来源："+r.source+"\n分类："+r.category+"\n摘要："+(r.summary||"")+"\n原文："+(r.link||"无");
+  }).join("\n\n");
+  var btn = this;
+  copyText(txt, function(){ flashBtn(btn,"✓ 已复制 "+list.length+" 条"); }, function(){ flashBtn(btn,"复制失败，请手动选择"); });
+};
+function flashBtn(btn,msg){
+  var old = btn.textContent;
+  btn.textContent = msg;
+  setTimeout(function(){ btn.textContent = old; },1800);
+}
+
+/* ===== 搜索 ===== */
+$("kw").addEventListener("input", function(){ kw=this.value; $("searchClear").style.display = kw?"block":"none"; render(); });
+$("searchClear").onclick = function(){ $("kw").value=""; kw=""; this.style.display="none"; render(); };
+
+/* ===== 底部导航（三态） ===== */
+function switchTab(t){
+  $("tabNews").className = t==="news"?"on":"";
+  $("tabQa").className = t==="qa"?"on":"";
+  $("tabOv").className = t==="ov"?"on":"";
+  $("newsView").style.display = t==="news"?"block":"none";
+  $("qaView").style.display = t==="qa"?"block":"none";
+  $("ovView").style.display = t==="ov"?"block":"none";
+}
+$("tabNews").onclick = function(){ switchTab("news"); };
+$("tabQa").onclick = function(){ switchTab("qa"); if(!$("qaMsgs").children.length) bootQA(); };
+$("tabOv").onclick = function(){ switchTab("ov"); };
+
+/* ===== 统计概览 ===== */
+function ovBar(label, val, max, color){
+  var w = max>0 ? Math.max(3, Math.round(val/max*100)) : 0;
+  return '<div class="ov-row"><div class="nm">'+esc(label)+'</div><div class="bar-bg"><div class="bar-fill" style="width:'+w+'%;background:'+color+'"></div></div><div class="cnt">'+val+'</div></div>';
+}
+function initOverview(){
+  var recs = DATA.records;
+  /* 顶部数字卡 */
+  var upd = (DATA.meta && (DATA.meta.updated_at||DATA.meta.generated_at)) || "—";
+  var monthsAll = {}, srcs = {}, i, r;
+  for(i=0;i<recs.length;i++){ r=recs[i];
+    var mk = getMonthKey(r); if(mk) monthsAll[mk]=(monthsAll[mk]||0)+1;
+    var s = (r.source||"").replace(/（.*?）|\(.*?\)/g,"").slice(0,12); srcs[s]=(srcs[s]||0)+1;
+  }
+  var noLink = recs.filter(function(x){ return !(x.link && x.link.indexOf("http")===0); }).length;
+  var html = '<div class="ov-grid">'
+    + '<div class="ov-num"><div class="v">'+recs.length+'</div><div class="l">收录报道总数</div></div>'
+    + '<div class="ov-num"><div class="v">'+Object.keys(monthsAll).length+'</div><div class="l">覆盖月份数</div></div>'
+    + '<div class="ov-num"><div class="v">'+Object.keys(srcs).length+'</div><div class="l">信息来源数</div></div>'
+    + '<div class="ov-num"><div class="v">'+(recs.length-noLink)+'</div><div class="l">可跳转原文数</div></div>'
+    + '</div>';
+
+  /* 分类分布 */
+  var catArr = MAIN_CATS.filter(function(c){ return DATA.meta.cat_colors[c]; })
+    .map(function(c){ return {c:c, n:recs.filter(function(x){return x.category===c;}).length}; })
+    .filter(function(x){ return x.n>0; })
+    .sort(function(a,b){ return b.n-a.n; });
+  var catMax = Math.max.apply(null, catArr.map(function(x){return x.n;}));
+  html += '<div class="ov-sec"><h2>业务分类分布<span class="upd">数据更新至 '+esc(upd)+'</span></h2>'
+    + catArr.map(function(x){ return ovBar(x.c, x.n, catMax, DATA.meta.cat_colors[x.c].text); }).join("") + '</div>';
+
+  /* 月份分布 */
+  var mkArr = Object.keys(monthsAll).sort();
+  var mkMax = Math.max.apply(null, mkArr.map(function(m){return monthsAll[m];}));
+  html += '<div class="ov-sec"><h2>月份分布</h2>'
+    + mkArr.map(function(m){ return ovBar(m, monthsAll[m], mkMax, "#2B6CB0"); }).join("") + '</div>';
+
+  /* 主题标签分布 */
+  var tp = {};
+  recs.forEach(function(x){ tagsOf(x).forEach(function(t){ tp[t]=(tp[t]||0)+1; }); });
+  var tpArr = Object.keys(tp).sort(function(a,b){ return tp[b]-tp[a]; });
+  html += '<div class="ov-sec"><h2>主题标签分布</h2><div class="ov-tags">'
+    + tpArr.map(function(t){ return '<span class="t">'+esc(t)+' <b>'+tp[t]+'</b></span>'; }).join("") + '</div></div>';
+
+  /* 常用检索收藏 */
+  html += '<div class="ov-sec"><h2>常用检索收藏<span class="upd">点击「☆ 收藏」可保存当前筛选组合</span></h2><div id="favList"></div></div>';
+
+  $("ovWrap").innerHTML = html;
+  renderFavs();
+}
+
+/* ===== 常用检索收藏 ===== */
+function loadFavs(){
+  try{ return JSON.parse(localStorage.getItem(FAV_KEY)) || []; }catch(e){ return []; }
+}
+function saveFavs(f){ try{ localStorage.setItem(FAV_KEY, JSON.stringify(f)); }catch(e){} }
+function currentFilterDesc(){
+  var p = [];
+  if(curCat!=="全部") p.push(curCat);
+  curMonths.forEach(function(m){ p.push(monthLabel(m)); });
+  curTags.forEach(function(t){ p.push(t); });
+  if(kw.trim()) p.push("关键词:"+kw.trim());
+  return p.length ? p.join(" + ") : "全部";
+}
+function isCurrentFav(){
+  var f = loadFavs();
+  return f.some(function(x){
+    return x.cat===curCat && x.kw===kw
+      && x.months.join(",")===curMonths.slice().sort().join(",")
+      && x.tags.slice().sort().join(",")===curTags.slice().sort().join(",");
+  });
+}
+function syncFavBtn(){
+  $("favBtn").className = isCurrentFav() ? "on" : "";
+  $("favBtn").textContent = isCurrentFav() ? "★ 已收藏" : "☆ 收藏";
+}
+$("favBtn").onclick = function(){
+  var f = loadFavs();
+  if(isCurrentFav()){
+    saveFavs(f.filter(function(x){ return !(x.cat===curCat && x.kw===kw && x.months.join(",")===curMonths.slice().sort().join(",") && x.tags.slice().sort().join(",")===curTags.slice().sort().join(",")); }));
+  } else {
+    if(f.length>=12){ flashBtn(this,"最多12个"); return; }
+    f.unshift({cat:curCat, months:curMonths.slice(), tags:curTags.slice(), kw:kw, desc:currentFilterDesc(), n:filtered().length, t:new Date().toLocaleDateString()});
+    saveFavs(f);
+  }
+  renderFavs(); syncFavBtn(); flashBtn(this, isCurrentFav()?"已收藏":"已取消");
+};
+function renderFavs(){
+  var box = document.getElementById("favList");
+  if(!box) return;
+  var f = loadFavs();
+  if(!f.length){ box.innerHTML = '<div class="ov-empty">暂无收藏。在「新闻检索」页设置好分类/标签/月份/关键词后，点击统计栏的「☆ 收藏」即可保存，下次一键恢复。</div>'; return; }
+  box.innerHTML = f.map(function(x,i){
+    return '<div class="fav-item"><div class="nm">'+esc(x.desc)+'<div class="d">'+x.n+' 条 · '+esc(x.t)+'</div></div>'
+      + '<button class="fav-use" data-i="'+i+'">使用</button>'
+      + '<button class="fav-del" data-i="'+i+'">删除</button></div>';
+  }).join("");
+  box.querySelectorAll(".fav-use").forEach(function(b){
+    b.onclick = function(){
+      var x = loadFavs()[Number(this.getAttribute("data-i"))];
+      if(!x) return;
+      curCat = x.cat; curMonths = x.months.slice(); curTags = x.tags.slice(); kw = x.kw;
+      $("kw").value = kw; $("searchClear").style.display = kw?"block":"none";
+      switchTab("news"); render();
+    };
+  });
+  box.querySelectorAll(".fav-del").forEach(function(b){
+    b.onclick = function(){
+      var f2 = loadFavs(); f2.splice(Number(this.getAttribute("data-i")),1); saveFavs(f2); renderFavs(); syncFavBtn();
+    };
+  });
+}
+
+/* ===== 导出CSV ===== */
+$("exportBtn").onclick = function(){
+  var list = filtered();
+  if(!list.length){ flashBtn(this,"无结果"); return; }
+  var rows = [["发布日期","标题","来源","业务分类","主题标签","摘要","原文链接","备注"]];
+  list.forEach(function(r){
+    rows.push([r.date, '"'+r.title.replace(/"/g,'""')+'"', r.source, r.category, (r.extra_cats||[]).join("/"), '"'+(r.summary||"").replace(/"/g,'""')+'"', r.link||"", (r.note||"").replace(/"/g,'""')]);
+  });
+  var csv = "\ufeff" + rows.map(function(x){ return x.join(","); }).join("\n");
+  var blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "番禺区民政新闻_" + new Date().toISOString().slice(0,10) + "_" + list.length + "条.csv";
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 800);
+  flashBtn(this,"已导出 "+list.length+" 条");
+};
+
+/* ===== 问答助手（本地检索） ===== */
+var STOP = ["的","了","吗","呢","有","哪些","什么","关于","最新","新闻","报道","番禺","区","请","帮我","一下","怎么","如何","给我","推荐","看看","找找","有没有","相关","报道","条","哪些"];
+var SUGGEST = ["5月有哪些养老新闻","慈善社区我先行 最新进展","困境儿童 关爱","520/七夕 集体颁证","低保标准","社会组织 公益项目"];
+
+function bootQA(){
+  $("qaMsgs").innerHTML = "";
+  $("qaSuggest").innerHTML = SUGGEST.map(function(s){ return '<span class="s">'+esc(s)+'</span>'; }).join("");
+  $("qaSuggest").onclick = function(e){
+    var t = e.target.closest(".s"); if(!t) return;
+    sendQA(t.textContent);
+  };
+  addMsg("你好，我是番禺区民政新闻检索助手。可问：某月有哪些养老/慈善/婚登新闻？某主题最新进展？直接输入关键词即可。", false);
+}
+function addMsg(html, isUser){
+  var box = document.createElement("div");
+  box.className = "msg " + (isUser?"user":"bot");
+  box.innerHTML = '<div class="av">'+(isUser?"我":"助")+'</div><div class="bub">'+html+'</div>';
+  $("qaMsgs").appendChild(box);
+  var w = $("qaView"); if(w) w.scrollTop = w.scrollHeight;
+}
+function sendQA(q){
+  q = (q||"").trim();
+  if(!q) return;
+  addMsg(esc(q), true);
+  $("qaIn").value = "";
+  addMsg(ask(q), false);
+}
+$("qaBtn").onclick = function(){ sendQA($("qaIn").value); };
+$("qaIn").addEventListener("keydown", function(e){ if(e.key==="Enter") sendQA(this.value); });
+
+function tokenize(q){
+  var arr = q.split(/[\s,，。、；;：:？！!?]+/).filter(Boolean);
+  var out = [];
+  arr.forEach(function(w){ if(STOP.indexOf(w)<0) out.push(w); });
+  return out.length ? out : [q];
+}
+function detectMonth(q){
+  var m = q.match(/(20\d{2})年(\d{1,2})月/);
+  return m ? {y:m[1], m:("0"+m[2]).slice(-2)} : null;
+}
+function isLatest(q){ return /最新|最近|近期/.test(q); }
+
+function ask(q){
+  var tokens = tokenize(q);
+  var month = detectMonth(q);
+  var latest = isLatest(q);
+  var scored = DATA.records.map(function(r){
+    var s = 0;
+    var hay = (r.title+" "+(r.summary||"")+" "+r.category+" "+r.extra_cats.join(" ")+" "+(r.source||"")+" "+(r.note||"")).toLowerCase();
+    tokens.forEach(function(t){
+      var tl = t.toLowerCase(); if(!tl) return;
+      if(r.title && r.title.toLowerCase().indexOf(tl)>=0) s += 4;
+      else if(hay.indexOf(tl)>=0) s += 2;
+      if((r.category||"").toLowerCase().indexOf(tl)>=0) s += 1;
+    });
+    if(month){
+      var sk = sortKey(r.date);
+      if(sk.indexOf(month.y+"-"+month.m)===0) s += 3; else s -= 5;
+    }
+    return {r:r, s:s};
+  });
+  var arr = scored.filter(function(x){ return x.s>0; })
+    .sort(function(a,b){ return b.s-a.s || (sortKey(b.r.date)<sortKey(a.r.date)?-1:1); });
+  var top;
+  var head;
+  if(latest){
+    top = DATA.records.slice(0,10);
+    head = "为你展示最近 10 条报道（按日期倒序）：";
+  } else if(month){
+    var inMonth = arr.filter(function(x){ return sortKey(x.r.date).indexOf(month.y+"-"+month.m)===0; });
+    top = (inMonth.length ? inMonth : arr).slice(0,8).map(function(x){ return x.r; });
+    head = "「"+month.y+"年"+month.m.replace(/^0/,"")+"月」相关报道 "+(inMonth.length||arr.length)+" 条（按相关度排序）：";
+  } else if(arr.length){
+    top = arr.slice(0,8).map(function(x){ return x.r; });
+    head = "找到 <b>"+arr.length+"</b> 条相关报道（按相关度排序，前 8 条）：";
+  } else {
+    return "没有找到与「"+esc(q)+"」相关的报道。建议换关键词试试：养老、慈善、520颁证、困境儿童、低保。";
+  }
+  if(!top.length) return "该时间段暂无相关报道，可扩大时间范围或换关键词。";
+  var items = top.map(function(r){
+    var cc = DATA.meta.cat_colors[r.category] || DATA.meta.cat_colors["其他民政业务"];
+    return '<div class="qa-item"><div class="t">'+esc(r.date)+' · '+esc(r.title)+'</div>'
+      + '<div class="m">'+esc((r.summary||"").slice(0,80))+(r.summary&&r.summary.length>80?"…":"")+'</div>'
+      + '<div class="d"><span style="color:'+cc.text+'">'+esc(r.category)+'</span> · '+esc(r.source)+' · '
+      + (r.link && r.link.indexOf("http")===0 ? '<a href="'+esc(r.link)+'" target="_blank">查看原文</a>' : '无独立链接') + '</div></div>';
+  }).join("");
+  return head + items;
+}
+
+/* ===== 下拉刷新 ===== */
+var PULL_TH = 55;
+var pull = {startY:0, active:false, dist:0, refreshing:false};
+function applyPull(d){
+  $("pullWrap").style.height = d+"px";
+  $("pullIc").className = "pull-ic" + (d>=PULL_TH ? " arrow" : "");
+  $("pullText").textContent = d>=PULL_TH ? "释放立即刷新" : "下拉刷新";
+}
+function resetPull(){
+  $("pullWrap").style.height = "0px";
+  $("pullText").textContent = "下拉刷新";
+  pull.dist = 0;
+}
+function finishRefresh(msg){
+  $("pullText").textContent = msg;
+  $("pullIc").className = "pull-ic";
+  setTimeout(function(){ resetPull(); pull.refreshing = false; }, 1300);
+}
+function refreshData(){
+  pull.refreshing = true;
+  $("pullText").textContent = "正在刷新…";
+  $("pullIc").className = "pull-ic spin";
+  $("pullWrap").style.height = "56px";
+  fetch(DATA_URL + "?v=" + Date.now(), {cache:"no-store"})
+    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(j){
+      DATA = j;
+      j.records.sort(function(a,b){ return sortKey(b.date) < sortKey(a.date) ? -1 : 1; });
+      var upd = j.meta && (j.meta.updated_at || j.meta.generated_at) || "";
+      $("metaInfo").textContent = upd ? "共 " + j.meta.total + " 条 · 更新至 " + upd : "共 " + j.meta.total + " 条";
+      initChips(); render(); initOverview();
+      finishRefresh("✓ 已更新至最新");
+    })
+    .catch(function(){ finishRefresh("刷新失败，请检查网络"); });
+}
+document.addEventListener("touchstart", function(e){
+  if(pull.refreshing || !DATA) return;
+  if(window.scrollY<=0){ pull.startY = e.touches[0].clientY; pull.active = true; }
+}, {passive:true});
+document.addEventListener("touchmove", function(e){
+  if(!pull.active || pull.refreshing) return;
+  if(window.scrollY>0){ pull.active=false; resetPull(); return; }
+  var dy = e.touches[0].clientY - pull.startY;
+  if(dy<=0){ if(pull.dist>0) resetPull(); return; }
+  pull.dist = Math.min(90, dy*0.45);
+  applyPull(pull.dist);
+}, {passive:true});
+document.addEventListener("touchend", function(){
+  if(!pull.active) return;
+  pull.active = false;
+  if(pull.dist >= PULL_TH) refreshData();
+  else resetPull();
+});
+$("refreshBtn").onclick = function(){
+  if(pull.refreshing) return;
+  pull.refreshing = true;
+  $("pullText").textContent = "正在刷新…";
+  $("pullIc").className = "pull-ic spin";
+  $("pullWrap").style.height = "56px";
+  refreshData();
+};
+
+/* ===== 分享弹窗（海报模式） ===== */
+function curUrl(){
+  var u = location.href.split("#")[0].split("?")[0];
+  return u;
+}
+$("shareBtn").onclick = function(){
+  $("shareModal").className = "modal-mask show";
+  $("shareUrl").value = curUrl();
+  $("wxTip").style.display = /MicroMessenger/i.test(navigator.userAgent) ? "block" : "none";
+};
+$("closeShare").onclick = function(){ $("shareModal").className = "modal-mask"; };
+$("shareModal").addEventListener("click", function(e){ if(e.target===this) this.className="modal-mask"; });
+$("copyUrlBtn").onclick = function(){
+  var btn = this;
+  copyText($("shareUrl").value, function(){ btn.textContent = "已复制"; setTimeout(function(){ btn.textContent="复制链接"; },1600); },
+    function(){ $("shareUrl").select(); btn.textContent = "请长按输入框复制"; setTimeout(function(){ btn.textContent="复制链接"; },2000); });
+};
+
+loadData();
+</script>
+</body>
+</html>

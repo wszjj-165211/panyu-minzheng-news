@@ -24,6 +24,9 @@ jobs:
       - name: Run daily fetch
         run: python scripts/fetch_all.py --pages 2
 
+      - name: Build embedded-data page
+        run: python scripts/build.py
+
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"

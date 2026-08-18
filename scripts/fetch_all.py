@@ -54,8 +54,11 @@ def fetch_pycs():
             date = dm.group(0) if dm else ''
             if not in_scope(date):
                 continue
-            out.append({'date': date, 'title': re.sub(r'\s+', ' ', m.group(3)).strip(),
-                        'link': 'https://www.pycs.org.cn' + m.group(1), 'source': '番禺区慈善会官网', 'col': cname})
+            title = re.sub(r'\s+', ' ', m.group(3)).strip()
+            cat, labels = classify(title, '')
+            out.append({'date': date, 'title': title,
+                        'link': 'https://www.pycs.org.cn' + m.group(1), 'source': '番禺区慈善会官网',
+                        'col': cname, 'category': cat, 'labels': labels, 'summary': ''})
     return out
 
 # ================= 源2: 广州市民政局 =================
@@ -81,7 +84,9 @@ def fetch_mzj():
             link = m.group(1)
             if not link.startswith('http'):
                 link = 'http://mzj.gz.gov.cn' + link
-            out.append({'date': date, 'title': title, 'link': link, 'source': '广州市民政局官网', 'col': '市民政局动态'})
+            cat, labels = classify(title, '')
+            out.append({'date': date, 'title': title, 'link': link, 'source': '广州市民政局官网',
+                        'col': '市民政局动态', 'category': cat, 'labels': labels, 'summary': ''})
     return out
 
 # ================= 源3: 番禺区政府网（部门动态+16镇街） =================
@@ -229,10 +234,11 @@ def merge(records, tag):
         if k in existing:
             continue
         existing.add(k)
+        cat = it.get('category') or '其他民政业务'
         d['records'].append({
             'date': it['date'], 'title': it['title'], 'source': it['source'],
-            'link': it['link'], 'category': it['category'], 'extra_cats': [],
-            'labels': it['labels'], 'summary': it['summary'],
+            'link': it['link'], 'category': cat, 'extra_cats': [],
+            'labels': it.get('labels') or [cat], 'summary': it.get('summary', ''),
             'note': f'【{tag}自动抓取】{it.get("col", "")}',
         })
         added += 1

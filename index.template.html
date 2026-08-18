@@ -103,12 +103,10 @@ main{flex:1;overflow-y:auto;padding:12px 12px 66px;-webkit-overflow-scrolling:to
 #statBar b{color:var(--blue-d);font-weight:500}
 .statOps{display:flex;align-items:center;gap:8px}
 .statOps button{font-size:11px;border-radius:10px;padding:2px 10px;cursor:pointer;height:24px;line-height:1}
-#copyAllBtn{color:var(--blue-d);background:var(--blue-l);border:1px solid var(--blue)}
-#copyAllBtn:active{background:var(--blue-d);color:#fff}
+#sortBtn{color:var(--blue-d);background:var(--blue-l);border:1px solid var(--blue)}
+#sortBtn:active{background:var(--blue-d);color:#fff}
 #exportBtn{color:var(--green);background:#F0F4EA;border:1px solid var(--green)}
 #exportBtn:active{background:var(--green);color:#fff}
-#favBtn{color:#8A5A00;background:#FBF3E2;border:1px solid #D9A93C}
-#favBtn.on{background:#D9A93C;color:#fff}
 
 .filter-sec{margin-bottom:8px}
 .filter-sec .ft{font-size:12px;color:var(--text3);margin:10px 4px 6px}
@@ -163,6 +161,20 @@ main{flex:1;overflow-y:auto;padding:12px 12px 66px;-webkit-overflow-scrolling:to
 .news .btn-link[disabled]{opacity:.4;cursor:default}
 mark{background:#FFE58F;color:#8C5A00;border-radius:2px;padding:0 1px}
 .empty{text-align:center;color:var(--text3);padding:50px 20px;font-size:13px}
+
+/* ===== 月份筛选：移动端抽屉 / 电脑端右侧固定栏 ===== */
+#monthMask{position:fixed;inset:0;background:rgba(15,25,40,.5);z-index:88;display:none}
+#monthMask.show{display:block}
+#monthFab{position:fixed;right:14px;bottom:74px;z-index:85;width:46px;height:46px;border-radius:50%;border:none;background:var(--blue-d);color:#fff;font-size:15px;font-weight:600;box-shadow:0 4px 14px rgba(30,90,168,.35);cursor:pointer;display:flex;align-items:center;justify-content:center}
+#monthFab:active{background:var(--blue)}
+#monthSide{position:fixed;left:0;right:0;bottom:0;z-index:92;background:#fff;border-radius:18px 18px 0 0;padding:14px 16px 18px;box-shadow:0 -6px 30px rgba(0,0,0,.18);transform:translateY(105%);transition:transform .25s ease;max-height:62vh;overflow-y:auto}
+#monthSide.show{transform:none}
+#monthSide .m-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+#monthSide .m-head span{font-size:14px;font-weight:600;color:var(--blue-d)}
+#monthSide .m-head .sub{font-size:11px;color:var(--text3);font-weight:400;margin-left:6px}
+#monthSide .m-head button{border:none;background:var(--bg);width:26px;height:26px;border-radius:50%;color:var(--text3);cursor:pointer;font-size:12px;flex-shrink:0}
+#monthReset{display:block;width:100%;height:38px;margin-top:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer}
+#monthReset:active{background:var(--line)}
 
 /* ===== 统计概览页 ===== */
 #ovView{display:none}
@@ -255,6 +267,12 @@ nav button.on{color:var(--blue-d)}
   nav .wrap{max-width:860px}
   .qa-wrap{max-width:860px}
 }
+@media (min-width:1200px){
+  #monthFab,#monthMask{display:none}
+  #monthSide{left:auto;right:max(12px, calc(50% - 588px));bottom:auto;top:88px;width:150px;transform:none;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.10);border:1px solid var(--line);padding:12px;max-height:calc(100vh - 120px)}
+  #monthSide .m-head button{display:none}
+  #monthSide .m-head .sub{display:block;margin:2px 0 0}
+}
 </style>
 </head>
 <body>
@@ -295,10 +313,14 @@ nav button.on{color:var(--blue-d)}
       <div class="chips" id="catChips"></div>
       <div class="ft">主题标签（可多选，叠加筛选）</div>
       <div class="chips" id="tagChips"></div>
-      <div class="ft">月份（可多选，叠加筛选）</div>
-      <div class="chips" id="monthChips"></div>
+      <div class="ft">来源类型（单选）</div>
+      <div class="chips" id="srcChips">
+        <span class="chip on" data-src="all">全部</span>
+        <span class="chip" data-src="gov">政府报道</span>
+        <span class="chip" data-src="media">媒体报道</span>
+      </div>
     </div>
-    <div id="statBar"><span id="statText"></span><span class="statOps"><span id="sortText">按发布日期倒序</span><button id="favBtn" title="收藏当前筛选组合">☆ 收藏</button><button id="exportBtn" title="导出当前筛选结果为CSV">导出CSV</button><button id="copyAllBtn">复制全部</button></span></div>
+    <div id="statBar"><span id="statText"></span><span class="statOps"><button id="sortBtn" title="切换排序方式">⤯ 按日期倒序</button><button id="exportBtn" title="导出当前筛选结果为Excel表格">导出表格</button></span></div>
     <div id="newsList"></div>
   </main>
 
@@ -328,6 +350,15 @@ nav button.on{color:var(--blue-d)}
   </nav>
 </div>
 
+<!-- ===== 月份筛选：手机为底部抽屉，电脑为右侧固定栏 ===== -->
+<div id="monthMask"></div>
+<button id="monthFab" title="按月份筛选">月</button>
+<aside id="monthSide">
+  <div class="m-head"><span>按月份筛选<span class="sub">可多选，叠加</span></span><button id="monthClose" title="关闭">✕</button></div>
+  <div class="chips" id="monthChips"></div>
+  <button id="monthReset">清除月份筛选</button>
+</aside>
+
 <!-- ===== 分享弹窗 ===== -->
 <div id="shareModal" class="modal-mask">
   <div class="modal">
@@ -354,14 +385,18 @@ nav button.on{color:var(--blue-d)}
 var PASSWORD = "pymz2026";
 var DATA_URL = "data/news_data.json";
 var STORAGE_KEY = "mz_news_pw_ok";
-var FAV_KEY = "mz_news_favs_v1";
 var LIKE_KEY = "mz_news_like_v1";
 var SEARCH_HIST_KEY = "mz_news_searchhist_v1";
 var READ_HIST_KEY = "mz_news_readhist_v1";
 /* 构建时由 scripts/build.py 注入内嵌数据（页面自带数据，不依赖外部请求，国内访问最稳） */
 var EMBEDDED_DATA = /*__DATA__*/null;
 var DATA = null;
-var curCat = "全部", curMonths = [], curTags = [], kw = "";
+var curCat = "全部", curMonths = [], curTags = [], kw = "", sortMode = "desc", srcFilter = "all";
+/* 政府/官方机构报道判断（来源名含 政府/民政局/慈善会 视为政府报道，其余为媒体报道） */
+function isGovSource(r){
+  var s = r.source || "";
+  return s.indexOf("政府")>=0 || s.indexOf("民政局")>=0 || s.indexOf("慈善会")>=0;
+}
 
 function $(id){ return document.getElementById(id); }
 function esc(s){ return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
@@ -527,11 +562,18 @@ function initChips(){
 function visibleRecords(){ return DATA.records.filter(function(r){ return !isDisliked(r.link); }); }
 function filtered(){
   var kwl = kw.trim().toLowerCase();
-  return visibleRecords().filter(function(r){
+  var list = visibleRecords().filter(function(r){
     if(!baseMatch(r,false,false,false)) return false;
+    if(srcFilter==="gov" && !isGovSource(r)) return false;
+    if(srcFilter==="media" && isGovSource(r)) return false;
     if(!kwl) return true;
     return (r.title+" "+(r.summary||"")+" "+(r.source||"")+" "+r.category+" "+r.extra_cats.join(" ")+" "+(r.note||"")).toLowerCase().indexOf(kwl) >= 0;
   });
+  list.sort(function(a,b){
+    var ka = sortKey(a.date), kb = sortKey(b.date);
+    return sortMode==="desc" ? (ka<kb?1:ka>kb?-1:0) : (ka<kb?-1:ka>kb?1:0);
+  });
+  return list;
 }
 function hl(text){
   if(!kw.trim()) return esc(text);
@@ -543,11 +585,18 @@ function hl(text){
 }
 function selDesc(){
   var p = [];
+  if(srcFilter!=="all") p.push(srcFilter==="gov"?"政府报道":"媒体报道");
   if(curCat!=="全部") p.push("分类："+curCat);
   if(curMonths.length) p.push("月份："+curMonths.map(monthLabel).join("+"));
   if(curTags.length) p.push("标签："+curTags.join("+"));
   if(kw.trim()) p.push("关键词："+kw.trim());
   return p.length ? "（"+p.join(" · ")+"）" : "";
+}
+function updateToolbar(){
+  $("srcChips").querySelectorAll(".chip").forEach(function(c){
+    c.classList.toggle("on", c.getAttribute("data-src")===srcFilter);
+  });
+  $("sortBtn").textContent = sortMode==="desc" ? "⤯ 按日期倒序" : "⤮ 按日期顺序";
 }
 function updateChipStates(){
   /* 分类 chips：数量跟随 月份+标签 交叉，选中态刷新 */
@@ -582,7 +631,7 @@ function updateChipStates(){
 function render(){
   var list = filtered();
   updateChipStates();
-  syncFavBtn();
+  updateToolbar();
   $("statText").innerHTML = "共 <b>"+list.length+"</b> 条 "+selDesc();
   $("resetBtn").className = (curCat!=="全部"||curMonths.length||curTags.length||kw.trim()) ? "show" : "";
   if(!list.length){ $("newsList").innerHTML = '<div class="empty">没有符合条件的报道<br>可点击上方「清除筛选」重新选择</div>'; return; }
@@ -650,10 +699,29 @@ function render(){
 
 /* ===== 清除筛选 ===== */
 $("resetBtn").onclick = function(){
-  curCat = "全部"; curMonths = []; curTags = [];
+  curCat = "全部"; curMonths = []; curTags = []; srcFilter = "all";
   kw = ""; $("kw").value = ""; $("searchClear").style.display = "none";
   render();
 };
+
+/* ===== 来源类型 / 排序方式 ===== */
+$("srcChips").onclick = function(e){
+  var t = e.target.closest(".chip"); if(!t) return;
+  srcFilter = t.getAttribute("data-src");
+  render();
+};
+$("sortBtn").onclick = function(){
+  sortMode = sortMode==="desc" ? "asc" : "desc";
+  render();
+};
+
+/* ===== 月份筛选：手机抽屉 / 电脑固定栏 ===== */
+function openMonthPanel(){ $("monthSide").className = "show"; $("monthMask").className = "show"; }
+function closeMonthPanel(){ $("monthSide").className = ""; $("monthMask").className = ""; }
+$("monthFab").onclick = openMonthPanel;
+$("monthClose").onclick = closeMonthPanel;
+$("monthMask").onclick = closeMonthPanel;
+$("monthReset").onclick = function(){ curMonths = []; closeMonthPanel(); render(); };  
 
 /* ===== 复制（兼容微信） ===== */
 function copyText(txt, doneCb, failCb){
@@ -682,16 +750,7 @@ function flash(card,msg){
   setTimeout(function(){ o.textContent="复制条目"; },1600);
 }
 
-/* ===== 复制全部筛选结果 ===== */
-$("copyAllBtn").onclick = function(){
-  var list = filtered();
-  if(!list.length){ flashBtn(this,"无结果"); return; }
-  var txt = "番禺区民政领域官方报道（"+list.length+"条，筛选项"+selDesc()+"）\n\n" + list.map(function(r,i){
-    return (i+1)+". 【"+r.date+"】"+r.title+"\n来源："+r.source+"\n分类："+r.category+"\n摘要："+(r.summary||"")+"\n原文："+(r.link||"无");
-  }).join("\n\n");
-  var btn = this;
-  copyText(txt, function(){ flashBtn(btn,"✓ 已复制 "+list.length+" 条"); }, function(){ flashBtn(btn,"复制失败，请手动选择"); });
-};
+/* ===== 按钮文字反馈 ===== */
 function flashBtn(btn,msg){
   var old = btn.textContent;
   btn.textContent = msg;
@@ -792,19 +851,15 @@ function ovBar(label, val, max, color){
 }
 function initOverview(){
   var recs = DATA.records;
-  /* 顶部数字卡 */
+  /* 顶部数字卡：只保留总数与覆盖月份数 */
   var upd = (DATA.meta && (DATA.meta.updated_at||DATA.meta.generated_at)) || "—";
-  var monthsAll = {}, srcs = {}, i, r;
+  var monthsAll = {}, i, r;
   for(i=0;i<recs.length;i++){ r=recs[i];
     var mk = getMonthKey(r); if(mk) monthsAll[mk]=(monthsAll[mk]||0)+1;
-    var s = (r.source||"").replace(/（.*?）|\(.*?\)/g,"").slice(0,12); srcs[s]=(srcs[s]||0)+1;
   }
-  var noLink = recs.filter(function(x){ return !(x.link && x.link.indexOf("http")===0); }).length;
   var html = '<div class="ov-grid">'
     + '<div class="ov-num"><div class="v">'+recs.length+'</div><div class="l">收录报道总数</div></div>'
     + '<div class="ov-num"><div class="v">'+Object.keys(monthsAll).length+'</div><div class="l">覆盖月份数</div></div>'
-    + '<div class="ov-num"><div class="v">'+Object.keys(srcs).length+'</div><div class="l">信息来源数</div></div>'
-    + '<div class="ov-num"><div class="v">'+(recs.length-noLink)+'</div><div class="l">可跳转原文数</div></div>'
     + '</div>';
 
   /* 分类分布 */
@@ -829,79 +884,13 @@ function initOverview(){
   html += '<div class="ov-sec"><h2>主题标签分布</h2><div class="ov-tags">'
     + tpArr.map(function(t){ return '<span class="t">'+esc(t)+' <b>'+tp[t]+'</b></span>'; }).join("") + '</div></div>';
 
-  /* 常用检索收藏 */
-  html += '<div class="ov-sec"><h2>常用检索收藏<span class="upd">点击「☆ 收藏」可保存当前筛选组合</span></h2><div id="favList"></div></div>';
-
   /* 最近阅读 / 收藏报道 / 已隐藏报道 */
   html += '<div class="ov-sec"><h2>最近阅读<span class="upd">点击新闻卡片自动记录，最多 20 条</span></h2><div id="readHistList"></div></div>';
-  html += '<div class="ov-sec"><h2>我收藏的报道<span class="upd">点击卡片 ♡ 收藏（与 ☆ 筛选收藏不同）</span></h2><div id="favNewsList"></div></div>';
+  html += '<div class="ov-sec"><h2>我收藏的报道<span class="upd">点击卡片 ♡ 收藏，可在此查看或取消</span></h2><div id="favNewsList"></div></div>';
   html += '<div class="ov-sec"><h2>已隐藏报道（不喜欢）<span class="upd">默认在列表中隐藏，可在此恢复</span></h2><div id="hiddenList"></div></div>';
 
   $("ovWrap").innerHTML = html;
-  renderFavs();
   renderLikeLists();
-}
-
-/* ===== 常用检索收藏 ===== */
-function loadFavs(){
-  try{ return JSON.parse(localStorage.getItem(FAV_KEY)) || []; }catch(e){ return []; }
-}
-function saveFavs(f){ try{ localStorage.setItem(FAV_KEY, JSON.stringify(f)); }catch(e){} }
-function currentFilterDesc(){
-  var p = [];
-  if(curCat!=="全部") p.push(curCat);
-  curMonths.forEach(function(m){ p.push(monthLabel(m)); });
-  curTags.forEach(function(t){ p.push(t); });
-  if(kw.trim()) p.push("关键词:"+kw.trim());
-  return p.length ? p.join(" + ") : "全部";
-}
-function isCurrentFav(){
-  var f = loadFavs();
-  return f.some(function(x){
-    return x.cat===curCat && x.kw===kw
-      && x.months.join(",")===curMonths.slice().sort().join(",")
-      && x.tags.slice().sort().join(",")===curTags.slice().sort().join(",");
-  });
-}
-function syncFavBtn(){
-  $("favBtn").className = isCurrentFav() ? "on" : "";
-  $("favBtn").textContent = isCurrentFav() ? "★ 已收藏" : "☆ 收藏";
-}
-$("favBtn").onclick = function(){
-  var f = loadFavs();
-  if(isCurrentFav()){
-    saveFavs(f.filter(function(x){ return !(x.cat===curCat && x.kw===kw && x.months.join(",")===curMonths.slice().sort().join(",") && x.tags.slice().sort().join(",")===curTags.slice().sort().join(",")); }));
-  } else {
-    if(f.length>=12){ flashBtn(this,"最多12个"); return; }
-    f.unshift({cat:curCat, months:curMonths.slice(), tags:curTags.slice(), kw:kw, desc:currentFilterDesc(), n:filtered().length, t:new Date().toLocaleDateString()});
-    saveFavs(f);
-  }
-  renderFavs(); syncFavBtn(); flashBtn(this, isCurrentFav()?"已收藏":"已取消");
-};
-function renderFavs(){
-  var box = document.getElementById("favList");
-  if(!box) return;
-  var f = loadFavs();
-  if(!f.length){ box.innerHTML = '<div class="ov-empty">暂无收藏。在「新闻检索」页设置好分类/标签/月份/关键词后，点击统计栏的「☆ 收藏」即可保存，下次一键恢复。</div>'; return; }
-  box.innerHTML = f.map(function(x,i){
-    return '<div class="fav-item"><div class="nm">'+esc(x.desc)+'<div class="d">'+x.n+' 条 · '+esc(x.t)+'</div></div>'
-      + '<button class="fav-use" data-i="'+i+'">使用</button>'
-      + '<button class="fav-del" data-i="'+i+'">删除</button></div>';
-  }).join("");
-  box.querySelectorAll(".fav-use").forEach(function(b){
-    b.onclick = function(){
-      var x = loadFavs()[Number(this.getAttribute("data-i"))];
-      if(!x) return;
-      curCat = x.cat; curMonths = x.months.slice(); curTags = x.tags.slice(); kw = x.kw;
-      $("kw").value = kw; $("searchClear").style.display = kw?"block":"none";
-      switchTab("news"); render();
-    };
-  });
-  box.querySelectorAll(".fav-del").forEach(function(b){
-    b.onclick = function(){
-      var f2 = loadFavs(); f2.splice(Number(this.getAttribute("data-i")),1); saveFavs(f2); renderFavs(); syncFavBtn();
-    };
-  });
 }
 
 /* ===== 最近阅读 / 收藏报道 / 已隐藏报道 ===== */
@@ -972,27 +961,33 @@ function renderLikeLists(){
   }
 }
 
-/* ===== 导出CSV ===== */
+/* ===== 导出表格（Excel/WPS 兼容 .xls，纯前端无需外部库） ===== */
 $("exportBtn").onclick = function(){
   var list = filtered();
   if(!list.length){ flashBtn(this,"无结果"); return; }
-  var rows = [["发布日期","标题","来源","业务分类","主题标签","摘要","原文链接","备注"]];
+  var head = ["发布日期","标题","来源","业务分类","主题标签","摘要","原文链接"];
+  var rows = [head];
   list.forEach(function(r){
-    rows.push([r.date, '"'+r.title.replace(/"/g,'""')+'"', r.source, r.category, (r.extra_cats||[]).join("/"), '"'+(r.summary||"").replace(/"/g,'""')+'"', r.link||"", (r.note||"").replace(/"/g,'""')]);
+    rows.push([r.date, r.title, r.source, r.category, (r.extra_cats||[]).join("/"), (r.summary||""), r.link||""]);
   });
-  var csv = "\ufeff" + rows.map(function(x){ return x.join(","); }).join("\n");
-  var blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>民政新闻</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table border="1">'
+    + rows.map(function(row, i){
+        var tag = i===0 ? "th" : "td";
+        return '<tr>'+row.map(function(c){ return '<'+tag+'>'+esc(c)+'</'+tag+'>'; }).join('')+'</tr>';
+      }).join('')
+    + '</table></body></html>';
+  var blob = new Blob(["\ufeff"+html], {type:"application/vnd.ms-excel;charset=utf-8"});
   var a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "番禺区民政新闻_" + new Date().toISOString().slice(0,10) + "_" + list.length + "条.csv";
+  a.download = "番禺区民政新闻_" + new Date().toISOString().slice(0,10) + "_" + list.length + "条.xls";
   document.body.appendChild(a); a.click();
   setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 800);
-  flashBtn(this,"已导出 "+list.length+" 条");
+  flashBtn(this,"已导出 "+list.length+" 条表格");
 };
 
 /* ===== 问答助手（本地检索） ===== */
 var STOP = ["的","了","吗","呢","有","哪些","什么","关于","最新","新闻","报道","番禺","区","请","帮我","一下","怎么","如何","给我","推荐","看看","找找","有没有","相关","报道","条","哪些"];
-var SUGGEST = ["5月有哪些养老新闻","慈善社区我先行 最新进展","困境儿童 关爱","520/七夕 集体颁证","低保标准","社会组织 公益项目"];
+var SUGGEST = ["5月有哪些养老新闻","慈善社区我先行 最新进展","一共收录了多少条","困境儿童 关爱","520/七夕 集体颁证","低保标准 相关报道"];
 
 function bootQA(){
   $("qaMsgs").innerHTML = "";
@@ -1020,6 +1015,25 @@ function sendQA(q){
 $("qaBtn").onclick = function(){ sendQA($("qaIn").value); };
 $("qaIn").addEventListener("keydown", function(e){ if(e.key==="Enter") sendQA(this.value); });
 
+/* —— 意图词典：口语/关键词 → 业务分类、主题标签 —— */
+var QA_CATS = {
+  "养老":"养老服务","老年":"养老服务","长者":"养老服务","敬老":"养老服务","银发":"养老服务","老人":"养老服务",
+  "慈善":"社区慈善","捐赠":"社区慈善","捐款":"社区慈善","募捐":"社区慈善","公益":"社区慈善","爱心":"社区慈善","义卖":"社区慈善",
+  "救助":"社会救助","低保":"社会救助","特困":"社会救助","残疾":"社会救助","帮扶":"社会救助","慰问":"社会救助","微心愿":"社会救助",
+  "儿童":"未成年人保护","未成年":"未成年人保护","未保":"未成年人保护","青少年":"未成年人保护","六一":"未成年人保护","亲子":"未成年人保护",
+  "婚姻":"婚姻登记","结婚":"婚姻登记","颁证":"婚姻登记","婚俗":"婚姻登记","离婚":"婚姻登记","520":"婚姻登记","七夕":"婚姻登记",
+  "社工":"社会组织","志愿":"社会组织","志愿者":"社会组织","社团":"社会组织","协会":"社会组织",
+  "殡葬":"殡葬管理","墓园":"殡葬管理","祭扫":"殡葬管理",
+  "区划":"区划地名","地名":"区划地名",
+  "社区治理":"基层治理","基层":"基层治理","居委会":"基层治理","村委会":"基层治理","网格":"基层治理"
+};
+var QA_TAGS = {
+  "银发经济":"银发经济","智慧养老":"智慧养老","适老化":"智慧养老",
+  "敬老助老":"敬老助老","长者饭堂":"敬老助老","颐康中心":"敬老助老",
+  "婚俗改革":"婚俗改革","集体颁证":"集体颁证","甜蜜经济":"甜蜜经济","婚姻家庭辅导":"婚姻家庭辅导","婚姻辅导":"婚姻家庭辅导",
+  "公益集市":"公益集市","爱心妈妈":"爱心妈妈","慈善募捐":"慈善募捐","志愿服务":"志愿服务"
+};
+
 function tokenize(q){
   var arr = q.split(/[\s,，。、；;：:？！!?]+/).filter(Boolean);
   var out = [];
@@ -1028,55 +1042,102 @@ function tokenize(q){
 }
 function detectMonth(q){
   var m = q.match(/(20\d{2})年(\d{1,2})月/);
-  return m ? {y:m[1], m:("0"+m[2]).slice(-2)} : null;
+  if(m) return {y:m[1], m:("0"+m[2]).slice(-2)};
+  var now = new Date();
+  if(/上个月/.test(q)){ var d1=new Date(now.getFullYear(), now.getMonth()-1, 1); return {y:String(d1.getFullYear()), m:("0"+(d1.getMonth()+1)).slice(-2)}; }
+  if(/本月|这个月/.test(q)) return {y:String(now.getFullYear()), m:("0"+(now.getMonth()+1)).slice(-2)};
+  var m2 = q.match(/(\d{1,2})月/);
+  if(m2) return {y:String(now.getFullYear()), m:("0"+m2[1]).slice(-2)};
+  return null;
 }
-function isLatest(q){ return /最新|最近|近期/.test(q); }
-
+function isLatest(q){ return /最新|最近|近期|新进展/.test(q); }
+function isCountQ(q){ return /多少|几条|共.*条|总共|统计|数量|几个|有多少/.test(q); }
+function isGreet(q){ return /^(你好|您好|嗨|hi|hello|哈喽|在吗|谢谢|感谢|辛苦)/i.test(q); }
+function intentCat(q){
+  var keys = Object.keys(QA_CATS).sort(function(a,b){ return b.length-a.length; });
+  for(var i=0;i<keys.length;i++){ if(q.indexOf(keys[i])>=0) return QA_CATS[keys[i]]; }
+  return null;
+}
+function intentTag(q){
+  var keys = Object.keys(QA_TAGS).sort(function(a,b){ return b.length-a.length; });
+  for(var i=0;i<keys.length;i++){ if(q.indexOf(keys[i])>=0) return QA_TAGS[keys[i]]; }
+  return null;
+}
+function qaItemHtml(r){
+  var cc = DATA.meta.cat_colors[r.category] || DATA.meta.cat_colors["其他民政业务"];
+  return '<div class="qa-item"><div class="t">'+esc(r.date)+' · '+esc(r.title)+'</div>'
+    + '<div class="m">'+esc((r.summary||"").slice(0,80))+(r.summary&&r.summary.length>80?"…":"")+'</div>'
+    + '<div class="d"><span style="color:'+cc.text+'">'+esc(r.category)+'</span> · '+esc(r.source)+' · '
+    + (r.link && r.link.indexOf("http")===0 ? '<a href="'+esc(r.link)+'" target="_blank">查看原文</a>' : '无独立链接') + '</div></div>';
+}
 function ask(q){
-  var tokens = tokenize(q);
-  var month = detectMonth(q);
-  var latest = isLatest(q);
-  var scored = visibleRecords().map(function(r){
+  q = (q||"").trim();
+  /* 1. 问候 / 致谢 */
+  if(isGreet(q)) return "你好！我是番禺区民政新闻检索助手。可以这样问我：<br>· 「5月有哪些养老新闻？」<br>· 「慈善社区我先行 最新进展」<br>· 「低保 相关报道有多少条？」<br>· 「一共收录了多少条？」<br>也可以直接输入关键词。";
+  var month = detectMonth(q), latest = isLatest(q), cat = intentCat(q), tag = intentTag(q);
+  /* 2. 统计数量 */
+  if(isCountQ(q)){
+    var pool = visibleRecords().filter(function(r){
+      if(cat && r.category!==cat) return false;
+      if(tag && !tagHit(r,tag)) return false;
+      if(month){ var sk=sortKey(r.date); if(sk.indexOf(month.y+"-"+month.m)!==0) return false; }
+      return true;
+    });
+    var d2 = [];
+    if(cat) d2.push("「"+cat+"」"); if(tag) d2.push("「"+tag+"」");
+    if(month) d2.push(month.y+"年"+month.m.replace(/^0/,"")+"月");
+    if(!pool.length) return (d2.length?d2.join(" · ")+" 下":"当前范围内")+"暂无收录报道。";
+    return (d2.length?d2.join(" · ")+" 下共有":"当前检索范围内共有")+" <b>"+pool.length+"</b> 条报道。" + (pool.length>5? " 为你展示前 5 条：<br>":" 全部列出：<br>") + pool.slice(0,5).map(qaItemHtml).join("");
+  }
+  /* 3. 最新 / 最近 */
+  if(latest){
+    var pool2 = visibleRecords().filter(function(r){
+      if(cat && r.category!==cat) return false;
+      if(tag && !tagHit(r,tag)) return false;
+      return true;
+    });
+    if(!pool2.length) return "「"+(cat||tag||"该主题")+"」暂无相关报道。";
+    return "「"+(cat||tag||"全部报道")+"」最近 10 条（按日期倒序）：" + pool2.slice(0,10).map(qaItemHtml).join("");
+  }
+  /* 4. 自然语言映射：分类 / 主题 / 月份 */
+  if(cat || tag || month){
+    var tokens = tokenize(q);
+    var scored = visibleRecords().map(function(r){
+      var s = 0;
+      if(cat && r.category===cat) s += 6;
+      if(tag && tagHit(r,tag)) s += 6;
+      if(month){ var sk=sortKey(r.date); if(sk.indexOf(month.y+"-"+month.m)===0) s += 3; else s -= 5; }
+      var hay = (r.title+" "+(r.summary||"")+" "+r.category+" "+r.extra_cats.join(" ")+" "+(r.source||"")).toLowerCase();
+      tokens.forEach(function(t){
+        var tl = t.toLowerCase(); if(!tl) return;
+        if(r.title && r.title.toLowerCase().indexOf(tl)>=0) s += 4;
+        else if(hay.indexOf(tl)>=0) s += 2;
+      });
+      return {r:r, s:s};
+    });
+    var arr = scored.filter(function(x){ return x.s>0; }).sort(function(a,b){ return b.s-a.s || (sortKey(b.r.date)<sortKey(a.r.date)?-1:1); });
+    var top = arr.slice(0,8).map(function(x){ return x.r; });
+    if(!top.length) return "没有找到相关报道。试试：养老、慈善、520颁证、困境儿童、低保、社会组织。";
+    var d4 = [];
+    if(cat) d4.push(cat); if(tag) d4.push(tag); if(month) d4.push(month.y+"年"+month.m.replace(/^0/,"")+"月");
+    return "「"+d4.join(" · ")+"」相关报道 "+arr.length+" 条（按相关度排序，前 8 条）：" + top.map(qaItemHtml).join("");
+  }
+  /* 5. 纯关键词兜底 */
+  var tokens2 = tokenize(q);
+  var scored2 = visibleRecords().map(function(r){
     var s = 0;
     var hay = (r.title+" "+(r.summary||"")+" "+r.category+" "+r.extra_cats.join(" ")+" "+(r.source||"")+" "+(r.note||"")).toLowerCase();
-    tokens.forEach(function(t){
+    tokens2.forEach(function(t){
       var tl = t.toLowerCase(); if(!tl) return;
       if(r.title && r.title.toLowerCase().indexOf(tl)>=0) s += 4;
       else if(hay.indexOf(tl)>=0) s += 2;
       if((r.category||"").toLowerCase().indexOf(tl)>=0) s += 1;
     });
-    if(month){
-      var sk = sortKey(r.date);
-      if(sk.indexOf(month.y+"-"+month.m)===0) s += 3; else s -= 5;
-    }
     return {r:r, s:s};
   });
-  var arr = scored.filter(function(x){ return x.s>0; })
-    .sort(function(a,b){ return b.s-a.s || (sortKey(b.r.date)<sortKey(a.r.date)?-1:1); });
-  var top;
-  var head;
-  if(latest){
-    top = visibleRecords().slice(0,10);
-    head = "为你展示最近 10 条报道（按日期倒序）：";
-  } else if(month){
-    var inMonth = arr.filter(function(x){ return sortKey(x.r.date).indexOf(month.y+"-"+month.m)===0; });
-    top = (inMonth.length ? inMonth : arr).slice(0,8).map(function(x){ return x.r; });
-    head = "「"+month.y+"年"+month.m.replace(/^0/,"")+"月」相关报道 "+(inMonth.length||arr.length)+" 条（按相关度排序）：";
-  } else if(arr.length){
-    top = arr.slice(0,8).map(function(x){ return x.r; });
-    head = "找到 <b>"+arr.length+"</b> 条相关报道（按相关度排序，前 8 条）：";
-  } else {
-    return "没有找到与「"+esc(q)+"」相关的报道。建议换关键词试试：养老、慈善、520颁证、困境儿童、低保。";
-  }
-  if(!top.length) return "该时间段暂无相关报道，可扩大时间范围或换关键词。";
-  var items = top.map(function(r){
-    var cc = DATA.meta.cat_colors[r.category] || DATA.meta.cat_colors["其他民政业务"];
-    return '<div class="qa-item"><div class="t">'+esc(r.date)+' · '+esc(r.title)+'</div>'
-      + '<div class="m">'+esc((r.summary||"").slice(0,80))+(r.summary&&r.summary.length>80?"…":"")+'</div>'
-      + '<div class="d"><span style="color:'+cc.text+'">'+esc(r.category)+'</span> · '+esc(r.source)+' · '
-      + (r.link && r.link.indexOf("http")===0 ? '<a href="'+esc(r.link)+'" target="_blank">查看原文</a>' : '无独立链接') + '</div></div>';
-  }).join("");
-  return head + items;
+  var arr2 = scored2.filter(function(x){ return x.s>0; }).sort(function(a,b){ return b.s-a.s || (sortKey(b.r.date)<sortKey(a.r.date)?-1:1); });
+  if(!arr2.length) return "没有找到与「"+esc(q)+"」相关的报道。建议换关键词试试：养老、慈善、520颁证、困境儿童、低保、社会组织。";
+  return "找到 <b>"+arr2.length+"</b> 条相关报道（按相关度排序，前 8 条）：" + arr2.slice(0,8).map(function(x){ return qaItemHtml(x.r); }).join("");
 }
 
 /* ===== 下拉刷新 ===== */

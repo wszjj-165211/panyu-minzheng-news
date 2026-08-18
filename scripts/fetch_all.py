@@ -318,14 +318,18 @@ def merge(records, tag):
     existing = {dedup_key(r['link']) for r in d['records']}
     added = 0
     for it in records:
-        k = dedup_key(it['link'])
+        # 无有效链接（跳转不了）的条目一律不录入，保证每条都可点开原文
+        link = it.get('link') or ''
+        if not link.startswith('http'):
+            continue
+        k = dedup_key(link)
         if k in existing:
             continue
         existing.add(k)
         cat = it.get('category') or '其他民政业务'
         d['records'].append({
             'date': it['date'], 'title': it['title'], 'source': it['source'],
-            'link': it['link'], 'category': cat, 'extra_cats': [],
+            'link': link, 'category': cat, 'extra_cats': [],
             'labels': it.get('labels') or [cat], 'summary': it.get('summary', ''),
             'note': f'【{tag}自动抓取】{it.get("col", "")}',
         })

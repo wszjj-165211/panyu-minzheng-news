@@ -161,6 +161,10 @@ main{flex:1;overflow-y:auto;padding:12px 12px 66px;-webkit-overflow-scrolling:to
 .news .btn-link[disabled]{opacity:.4;cursor:default}
 mark{background:#FFE58F;color:#8C5A00;border-radius:2px;padding:0 1px}
 .empty{text-align:center;color:var(--text3);padding:50px 20px;font-size:13px}
+.loadmore{text-align:center;padding:16px 0 34px}
+.loadmore button{background:var(--card);border:1px solid var(--line);color:var(--blue);border-radius:20px;padding:9px 28px;font-size:14px;cursor:pointer}
+.loadmore button:active{opacity:.7}
+.loadmore .hint{font-size:12px;color:var(--text3);margin-top:8px}
 
 /* ===== 月份筛选：移动端抽屉 / 电脑端右侧固定栏 ===== */
 #monthMask{position:fixed;inset:0;background:rgba(15,25,40,.5);z-index:88;display:none}
@@ -322,6 +326,7 @@ nav button.on{color:var(--blue-d)}
     </div>
     <div id="statBar"><span id="statText"></span><span class="statOps"><button id="sortBtn" title="切换排序方式">⤯ 按日期倒序</button><button id="exportBtn" title="导出当前筛选结果为Excel表格">导出表格</button></span></div>
     <div id="newsList"></div>
+    <div id="loadMoreWrap" class="loadmore" style="display:none"><button id="loadMoreBtn">加载更多</button><div class="hint" id="loadMoreHint"></div></div>
   </main>
 
   <div id="qaView">
@@ -434,6 +439,16 @@ function enter(){ $("gate").style.display="none"; $("app").className="app-show";
 try{ if(localStorage.getItem(STORAGE_KEY)==="1") enter(); }catch(e){}
 
 /* ===== 数据加载 ===== */
+/* fetch 带超时：防止 api.github.com 等通道在国内网络挂起（默认 8 秒自动放弃，避免"打开要等1分钟"） */
+function fetchT(url, ms){
+  var c = typeof AbortController !== "undefined" ? new AbortController() : null;
+  var t = setTimeout(function(){ if(c) c.abort(); }, ms || 8000);
+  return fetch(url, {cache:"no-store", signal: c ? c.signal : undefined}).then(function(r){
+    clearTimeout(t);
+    if(!r.ok) throw new Error(r.status);
+    return r;
+  }, function(e){ clearTimeout(t); throw e; });
+}
 function loadData(){
   var spin = '<div class="empty" style="padding:50px 0"><div style="width:26px;height:26px;border:3px solid var(--blue-l);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>正在加载新闻数据，请稍候…</div>';
   var failMsg = '<div class="empty">数据加载失败，请检查网络后重试（页面内置数据版不受影响）。</div>';
@@ -450,7 +465,7 @@ function loadData(){
   if(EMBEDDED_DATA){ done(EMBEDDED_DATA); setTimeout(silentRefresh, 600); return; }
   var v = new Date().toISOString().slice(0,10);
   /* 2. 同目录文件 */
-  fetch(DATA_URL + "?v=" + v, {cache:"no-store"})
+  fetchT(DATA_URL + "?v=" + v, 10000)
     .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
     .then(done)
     .catch(function(){
@@ -461,7 +476,7 @@ function loadData(){
       ];
       (function tryCdn(i){
         if(i >= cdns.length){ $("newsList").innerHTML = failMsg; return; }
-        fetch(cdns[i] + "?v=" + v, {cache:"no-store"})
+        fetchT(cdns[i] + "?v=" + v, 8000)
           .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
           .then(done)
           .catch(function(){ tryCdn(i+1); });
@@ -478,7 +493,7 @@ function silentRefresh(){
   var curTot = (DATA.meta && DATA.meta.total) || DATA.records.length;
   var tryCh = [
     function(){   /* 通道1: GitHub API（contents 接口，base64 解码，无缓存） */
-      return fetch("https://api.github.com/repos/wszjj-165211/panyu-minzheng-news/contents/data/news_data.json?ref=main", {cache:"no-store"})
+      return fetchT("https://api.github.com/repos/wszjj-165211/panyu-minzheng-news/contents/data/news_data.json?ref=main", 10000)
         .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
         .then(function(d){
           var bin = atob(d.content), bytes = new Uint8Array(bin.length);
@@ -487,11 +502,11 @@ function silentRefresh(){
         });
     },
     function(){   /* 通道2: jsDelivr CDN（国内可达，缓存约12小时） */
-      return fetch("https://cdn.jsdelivr.net/gh/wszjj-165211/panyu-minzheng-news@main/data/news_data.json?v=" + Date.now(), {cache:"no-store"})
+      return fetchT("https://cdn.jsdelivr.net/gh/wszjj-165211/panyu-minzheng-news@main/data/news_data.json?v=" + Date.now(), 8000)
         .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); });
     },
     function(){   /* 通道3: raw.githubusercontent（最后兜底） */
-      return fetch("https://raw.githubusercontent.com/wszjj-165211/panyu-minzheng-news/main/data/news_data.json?v=" + Date.now(), {cache:"no-store"})
+      return fetchT("https://raw.githubusercontent.com/wszjj-165211/panyu-minzheng-news/main/data/news_data.json?v=" + Date.now(), 8000)
         .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); });
     }
   ];
@@ -643,43 +658,64 @@ function updateToolbar(){
   $("sortBtn").textContent = sortMode==="desc" ? "⤯ 按日期倒序" : "⤮ 按日期顺序";
 }
 function updateChipStates(){
-  /* 分类 chips：数量跟随 月份+标签 交叉，选中态刷新 */
+  /* 单次遍历同时统计 分类/标签/月份 的交叉计数（替代原来的多重全量 filter，O(N)→O(N) 一遍跑完） */
+  var catCnt = {}, tagCnt = {}, monCnt = {};
+  var i, r, mk, catOK, monOK, tagOK;
+  for(i = 0; i < DATA.records.length; i++){
+    r = DATA.records[i];
+    mk = getMonthKey(r);
+    catOK = curCat === "全部" || r.category === curCat;
+    monOK = !curMonths.length || !mk || curMonths.indexOf(mk) >= 0;
+    tagOK = true;
+    for(var t = 0; t < curTags.length; t++){ if(!tagHit(r, curTags[t])){ tagOK = false; break; } }
+    /* 分类计数：忽略分类自身（跟随 月份+标签） */
+    if(monOK && tagOK) catCnt[r.category] = (catCnt[r.category] || 0) + 1;
+    /* 标签计数：忽略标签自身（跟随 分类+月份） */
+    if(catOK && monOK) tagsOf(r).forEach(function(tg){ tagCnt[tg] = (tagCnt[tg] || 0) + 1; });
+    /* 月份计数：忽略月份自身（跟随 分类+标签） */
+    if(catOK && tagOK && mk) monCnt[mk] = (monCnt[mk] || 0) + 1;
+  }
+  /* 分类 chips：更新计数与选中态 */
   $("catChips").querySelectorAll(".chip").forEach(function(c){
     var cat = c.getAttribute("data-c");
-    c.classList.toggle("sel", cat===curCat);
+    c.classList.toggle("sel", cat === curCat);
     var n = c.querySelector(".n"); if(!n) return;
-    var cnt = cat==="全部"
-      ? DATA.records.filter(function(r){ return baseMatch(r,true,false,false); }).length
-      : DATA.records.filter(function(r){ return r.category===cat && baseMatch(r,true,false,false); }).length;
-    n.textContent = cnt;
+    n.textContent = cat === "全部" ? DATA.meta.total : (catCnt[cat] || 0);
   });
-  /* 标签 chips：数量跟随 分类+月份 交叉，重新渲染 + 选中态 */
-  var fp = {};
-  DATA.records.forEach(function(r){
-    if(!baseMatch(r,false,false,true)) return;
-    tagsOf(r).forEach(function(t){ fp[t] = (fp[t]||0)+1; });
-  });
-  var sortedTags = Object.keys(fp).sort(function(a,b){ return fp[b]-fp[a] || (a<b?-1:1); });
+  /* 标签 chips：重建（跟随 分类+月份） */
+  var sortedTags = Object.keys(tagCnt).sort(function(a,b){ return tagCnt[b]-tagCnt[a] || (a<b?-1:1); });
   $("tagChips").innerHTML = sortedTags.map(function(t){
-    return '<span class="chip'+(curTags.indexOf(t)>=0?" on":"")+'" data-t="'+esc(t)+'">'+esc(t)+'<span class="n">'+fp[t]+'</span></span>';
+    return '<span class="chip'+(curTags.indexOf(t)>=0?" on":"")+'" data-t="'+esc(t)+'">'+esc(t)+'<span class="n">'+tagCnt[t]+'</span></span>';
   }).join("");
-  /* 月份 chips：数量跟随 分类+标签 交叉，选中态刷新 */
+  /* 月份 chips：更新计数与选中态 */
   $("monthChips").querySelectorAll(".chip").forEach(function(c){
-    var mk = c.getAttribute("data-m");
-    c.classList.toggle("on", curMonths.indexOf(mk)>=0);
+    var mkey = c.getAttribute("data-m");
+    c.classList.toggle("on", curMonths.indexOf(mkey) >= 0);
     var n = c.querySelector(".n"); if(!n) return;
-    var cnt = DATA.records.filter(function(r){ return getMonthKey(r)===mk && baseMatch(r,false,true,false); }).length;
-    n.textContent = cnt;
+    n.textContent = monCnt[mkey] || 0;
   });
 }
+var PAGE_SIZE = 30;                 /* 分页渲染：首屏 30 条，滚动到底/点按钮 自动加载下一批 */
+var renderList = [], renderedCount = 0;
+
 function render(){
-  var list = filtered();
+  renderList = filtered();
   updateChipStates();
   updateToolbar();
-  $("statText").innerHTML = "共 <b>"+list.length+"</b> 条 "+selDesc();
+  $("statText").innerHTML = "共 <b>"+renderList.length+"</b> 条 "+selDesc();
   $("resetBtn").className = (curCat!=="全部"||curMonths.length||curTags.length||kw.trim()) ? "show" : "";
-  if(!list.length){ $("newsList").innerHTML = '<div class="empty">没有符合条件的报道<br>可点击上方「清除筛选」重新选择</div>'; return; }
-  $("newsList").innerHTML = list.map(function(r){
+  if(!renderList.length){ $("newsList").innerHTML = '<div class="empty">没有符合条件的报道<br>可点击上方「清除筛选」重新选择</div>'; updateLoadMore(); return; }
+  renderedCount = 0;
+  $("newsList").innerHTML = "";
+  appendNews(PAGE_SIZE);
+  updateLoadMore();
+}
+function appendNews(n){
+  var end = Math.min(renderedCount + n, renderList.length);
+  if(end <= renderedCount) return;
+  var i, r, html = "";
+  for(i = renderedCount; i < end; i++){
+    r = renderList[i];
     var cc = DATA.meta.cat_colors[r.category] || DATA.meta.cat_colors["其他民政业务"];
     var extra = r.extra_cats && r.extra_cats.length ? r.extra_cats.map(function(c){return '<span class="tag-plus">+'+esc(c)+'</span>';}).join("") : "";
     var note = r.note ? '<div class="note show">备注：'+esc(r.note)+'</div>' : "";
@@ -687,7 +723,7 @@ function render(){
       ? '<button class="btn-link" data-url="'+esc(r.link)+'">查看原文 ↗</button>'
       : '<button class="btn-link" disabled>无独立链接</button>';
     var lk = likeState(r.link);
-    return '<div class="news" data-link="'+esc(r.link)+'">'
+    html += '<div class="news" data-link="'+esc(r.link)+'">'
       + '<div class="bar" style="background:'+cc.text+'"></div>'
       + '<div class="top"><span class="date">'+esc(r.date)+'</span><span class="cat-tag" style="background:'+cc.bg+';color:'+cc.text+'">'+esc(r.category)+'</span>'+extra+'</div>'
       + '<h3>'+hl(r.title)+'</h3>'
@@ -703,41 +739,68 @@ function render(){
       + '<button class="like'+(lk.fav?' on':'')+'">'+(lk.fav?'♥':'♡')+' 收藏</button>'
       + '<button class="dis">👎 不喜欢</button>'
       + '</div></div>';
-  }).join("");
+  }
+  renderedCount = end;
+  var tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  var cards = tmp.querySelectorAll(".news");
+  [].forEach.call(cards, bindCard);
+  while(tmp.firstChild) $("newsList").appendChild(tmp.firstChild);
+}
+function updateLoadMore(){
+  var wrap = $("loadMoreWrap"), btn = $("loadMoreBtn"), hint = $("loadMoreHint");
+  if(!wrap) return;
+  var left = renderList.length - renderedCount;
+  if(left <= 0){ wrap.style.display = "none"; return; }
+  wrap.style.display = "block";
+  btn.textContent = "加载更多（余 " + left + " 条）";
+  hint.textContent = "已显示 " + renderedCount + " / " + renderList.length + " 条";
+}
+$("loadMoreBtn").onclick = function(){ appendNews(PAGE_SIZE); updateLoadMore(); };
+var _scT;
+window.addEventListener("scroll", function(){
+  if(_scT) return;
+  _scT = setTimeout(function(){
+    _scT = null;
+    if(renderedCount < renderList.length && $("newsList").children.length){
+      var d = document.documentElement;
+      if((window.innerHeight + window.pageYOffset) >= (d.scrollHeight - 700)){ appendNews(PAGE_SIZE); updateLoadMore(); }
+    }
+  }, 200);
+}, false);
 
-  $("newsList").querySelectorAll(".news").forEach(function(card){
-    var link = card.getAttribute("data-link");
-    var likeBtn = card.querySelector(".like"), disBtn = card.querySelector(".dis");
-    likeBtn.onclick = function(){
-      var s = likeState(link);
-      setLike(link, "fav", !s.fav);
-      if(!s.fav && s.dis) setLike(link, "dis", false);   /* 收藏与不喜欢互斥 */
+function bindCard(card){
+  var link = card.getAttribute("data-link");
+  var likeBtn = card.querySelector(".like"), disBtn = card.querySelector(".dis");
+  likeBtn.onclick = function(){
+    var s = likeState(link);
+    setLike(link, "fav", !s.fav);
+    if(!s.fav && s.dis) setLike(link, "dis", false);   /* 收藏与不喜欢互斥 */
+    render();
+    toast(!s.fav ? "已收藏 ♥（可在统计概览查看）" : "已取消收藏");
+  };
+  disBtn.onclick = function(){
+    var s = likeState(link);
+    if(!s.dis){
+      setLike(link, "dis", true);
+      setLike(link, "fav", false);
       render();
-      toast(!s.fav ? "已收藏 ♥（可在统计概览查看）" : "已取消收藏");
-    };
-    disBtn.onclick = function(){
-      var s = likeState(link);
-      if(!s.dis){
-        setLike(link, "dis", true);
-        setLike(link, "fav", false);
-        render();
-        toast("已隐藏该报道，可在「统计概览-已隐藏报道」中恢复");
-      }
-    };
-    card.querySelector(".btn-more").onclick = function(){
-      var open = card.classList.toggle("open");
-      this.textContent = open ? "收起摘要" : "展开摘要";
-    };
-    var lb = card.querySelector(".btn-link");
-    if(lb && lb.getAttribute("data-url")) lb.onclick = function(){
-      recordRead({title:card.querySelector("h3").textContent, date:card.querySelector(".date").textContent, link:link});
-      window.open(lb.getAttribute("data-url"),"_blank");
-    };
-    card.querySelector(".btn-copy").onclick = function(){ copyNews(card); };
-    card.addEventListener("click", function(e){
-      if(e.target.closest("button")) return;   /* 点按钮不记阅读，只有点卡片正文/标题记 */
-      recordRead({title:card.querySelector("h3").textContent, date:card.querySelector(".date").textContent, link:link});
-    });
+      toast("已隐藏该报道，可在「统计概览-已隐藏报道」中恢复");
+    }
+  };
+  card.querySelector(".btn-more").onclick = function(){
+    var open = card.classList.toggle("open");
+    this.textContent = open ? "收起摘要" : "展开摘要";
+  };
+  var lb = card.querySelector(".btn-link");
+  if(lb && lb.getAttribute("data-url")) lb.onclick = function(){
+    recordRead({title:card.querySelector("h3").textContent, date:card.querySelector(".date").textContent, link:link});
+    window.open(lb.getAttribute("data-url"),"_blank");
+  };
+  card.querySelector(".btn-copy").onclick = function(){ copyNews(card); };
+  card.addEventListener("click", function(e){
+    if(e.target.closest("button")) return;   /* 点按钮不记阅读，只有点卡片正文/标题记 */
+    recordRead({title:card.querySelector("h3").textContent, date:card.querySelector(".date").textContent, link:link});
   });
 }
 

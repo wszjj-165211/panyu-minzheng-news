@@ -25,6 +25,17 @@ def main():
         sys.exit(1)
     with open(DATA, encoding='utf-8') as f:
         data = json.load(f)
+    records = data.get('records') or []
+    if not records:
+        print('ERROR: 数据为空，拒绝生成页面（防止把空数据发布上线）')
+        sys.exit(1)
+    # 自洁：无有效链接的条目不内嵌（跳转不了的不展示）
+    before = len(records)
+    records = [r for r in records if (r.get('link') or '').startswith('http')]
+    if len(records) != before:
+        print('注意: 已剔除 %d 条无有效链接条目' % (before - len(records)))
+        data['records'] = records
+        data['meta']['total'] = len(records)
     # 转义 </ 防止 </script> 提前闭合 HTML；JSON 字符串里 \/ 是合法转义
     payload = json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
     with open(TPL, encoding='utf-8') as f:

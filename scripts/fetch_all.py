@@ -2,12 +2,13 @@
 """
 GitHub Actions 全自动抓取脚本
 =============================
-抓取 3 个官方源 → 自动摘要/分类 → 合并进 news_data.json
+抓取 5 个官方源（慈善会官网 / 市民政局 / 区政府网 / 南方+ / 新花城）
+→ 自动摘要/分类 → 合并进 news_data.json
 全程无需人工，供 GitHub Actions 每日定时运行。
 
 运行: python scripts/fetch_all.py [--pages N]
 """
-import json, re, ssl, sys, os, urllib.request, datetime
+import json, re, ssl, sys, os, gzip, urllib.request, urllib.parse, datetime
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE, 'data', 'news_data.json')
@@ -26,11 +27,18 @@ def get(url, timeout=20, referer=None):
     if referer:
         h['Referer'] = referer
     req = urllib.request.Request(url, headers=h)
-    return urllib.request.urlopen(req, timeout=timeout, context=CTX).read().decode('utf-8', 'ignore')
+    resp = urllib.request.urlopen(req, timeout=timeout, context=CTX)
+    raw = resp.read()
+    if resp.headers.get('Content-Encoding') == 'gzip':
+        raw = gzip.decompress(raw)
+    return raw.decode('utf-8', 'ignore')
 
 def dedup_key(link):
-    m = re.search(r'(article-\d+|post_\d+)', link)
-    return m.group(1) if m else link.split('#')[0]
+    m = re.search(r'(article-\d+|post_\d+|c\d{6,})', link)
+    if m:
+        return m.group(1)
+    seg = link.rstrip('/').split('/')[-1].split('.')[0]
+    return seg if seg else link.split('#')[0]
 
 YEAR_START = '2026-01-01'
 def in_scope(date):
@@ -224,6 +232,86 @@ def fetch_panyu(max_pages=2):
                 break
     return records
 
+# ================= 源4: 南方+ 番禺频道 =================
+NFAPP_COLUMN = 24957  # 番禺频道 columnId（从 m.nfapp.southcn.com/column/all 提取）
+
+def norm_date(v):
+    """releaseTime/publishTime 可能是 '2026-08-17 10:00:00'、'2026-08-17T10:00:00' 或毫秒时间戳"""
+    if isinstance(v, (int, float)):
+        ts = v / 1000 if v > 1e12 else v
+        return datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+    s = str(v or '').strip()
+    m = re.search(r'(\d{4}-\d{2}-\d{2})', s)
+    return m.group(1) if m else ''
+
+def fetch_nfnews(max_pages=2):
+    out = []
+    for page in range(1, max_pages + 1):
+        url = ('https://api.nfapp.southcn.com/nfplus-manuscript-web/article/list'
+               '?columnId=%d&nfhSubCount=1&pageNum=%d&pageSize=20' % (NFAPP_COLUMN, page))
+        try:
+            data = json.loads(get(url, referer='https://m.nfapp.southcn.com/'))
+        except Exception:
+            continue
+        lst = (data.get('data') or {}).get('list') or []
+        if not lst:
+            break
+        for a in lst:
+            title = re.sub(r'<[^>]+>', '', a.get('title') or '').strip()
+            date = norm_date(a.get('releaseTime'))
+            if not title or not in_scope(date):
+                continue
+            if not any(k in title for k in KEYWORDS):
+                continue
+            aid = str(a.get('articleId') or '')
+            ymd = re.sub(r'[^\d]', '', str(a.get('releaseTime') or ''))[:8]
+            if len(ymd) == 8 and aid:
+                link = 'https://static.nfnews.com/content/%s/%s/c%s.html' % (ymd[:6], ymd[6:], aid)
+            else:
+                link = a.get('shareUrl') or ''
+            if not link:
+                continue
+            cat, labels = classify(title, '')
+            out.append({'date': date, 'title': title, 'link': link,
+                        'source': '南方+', 'col': '南方+番禺频道',
+                        'category': cat, 'labels': labels, 'summary': ''})
+    return out
+
+# ================= 源5: 新花城 番禺频道 =================
+HC_SITE = '5e88c884e2ed4e7a9a8d5225c299f707'
+HC_CHANNEL = '1253f926cf4c4f27b961b7761bb6f672'
+HC_KWS = ['养老', '慈善', '捐赠', '儿童', '救助', '低保', '婚姻', '社工', '志愿', '社区治理', '残疾', '殡葬']
+
+def fetch_huacheng(max_pages=3):
+    out = []
+    for kw in HC_KWS:
+        for page in range(1, max_pages + 1):
+            url = ('https://www.gz-cmc.com/contentapi/api/content/getChannelAllContents'
+                   '?siteId=%s&channelId=%s&currentTimeMillis=%d&keyword=%s&pageNum=%d&pageSize=20'
+                   % (HC_SITE, HC_CHANNEL, int(datetime.datetime.now().timestamp() * 1000),
+                      urllib.parse.quote(kw), page))
+            try:
+                data = json.loads(get(url, referer='https://www.gz-cmc.com/'))
+            except Exception:
+                continue
+            lst = data.get('list') or []
+            if not lst:
+                break
+            for it in lst:
+                a = it.get('data') or it
+                title = re.sub(r'<[^>]+>', '', a.get('title') or '').strip()
+                date = norm_date(a.get('publishTime'))
+                link = a.get('url') or ''
+                if not title or not link or not in_scope(date):
+                    continue
+                if not any(k in title for k in KEYWORDS):
+                    continue
+                cat, labels = classify(title, '')
+                out.append({'date': date, 'title': title, 'link': link,
+                            'source': '新花城', 'col': '新花城番禺频道',
+                            'category': cat, 'labels': labels, 'summary': ''})
+    return out
+
 # ================= 合并入库 =================
 def merge(records, tag):
     d = json.load(open(DATA_PATH, encoding='utf-8'))
@@ -262,6 +350,8 @@ def main():
     total_added += merge(fetch_pycs(), '慈善会官网')
     total_added += merge(fetch_mzj(), '市民政局')
     total_added += merge(fetch_panyu(max_pages), '区政府网')
+    total_added += merge(fetch_nfnews(5), '南方+')
+    total_added += merge(fetch_huacheng(2), '新花城')
     print('合计新增:', total_added)
     d = json.load(open(DATA_PATH, encoding='utf-8'))
     print('当前总量:', d['meta']['total'])

@@ -2,7 +2,9 @@ name: daily-fetch
 
 on:
   schedule:
-    # 北京时间每天 10:30 = UTC 02:30（GitHub 定时偶发漏跑，5 分钟后再试一次，重复触发会自动跳过）
+    # GitHub 定时偶发漏跑 → 每小时唤醒一次，脚本自己判断是否该干活（10:00 前不跑、当天已更新自动跳过）
+    - cron: '0 * * * *'
+    # 主更新时间：北京时间 10:30 / 10:35（10:00 的每小时唤醒已覆盖）
     - cron: '30 2 * * *'
     - cron: '35 2 * * *'
   workflow_dispatch:
@@ -26,9 +28,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      # 一键脚本：抓取 5 个源 + 打包生成 index.html
+      # 一键脚本：抓取 5 个源 + 打包生成 index.html（手动触发强制跑，定时触发自动去重）
       - name: Run all-in-one script
-        run: python run_all.py
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python run_all.py --force
+          else
+            python run_all.py
+          fi
 
       - name: Commit and push
         run: |

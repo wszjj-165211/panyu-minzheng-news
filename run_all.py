@@ -436,11 +436,39 @@ def build_page():
     print('OK: index.html 已生成 | 内嵌数据 %d 条 | %.1f KB' % (total, os.path.getsize(OUT_PATH) / 1024))
 
 # ═══════════════════════════════════════════════════════════════
+#  智能判断：GitHub 定时不可靠，改用"每小时唤醒 + 到这里判断"
+#  规则：① 当天已更新过 → 跳过（防止重复抓取）
+#       ② 北京时间 10:00 前 → 跳过（太早不抓，等主更新点）
+#       其余情况 → 正常抓取 + 打包
+# ═══════════════════════════════════════════════════════════════
+
+def should_run_today():
+    today = datetime.datetime.now().strftime('%Y-%m-%d')   # 与 meta.updated_at 同取 UTC 日期
+    bj_hour = (datetime.datetime.now() + datetime.timedelta(hours=8)).hour  # 北京时间小时
+    try:
+        if os.path.exists(DATA_PATH):
+            d = json.load(open(DATA_PATH, encoding='utf-8'))
+            upd = (d.get('meta') or {}).get('updated_at', '')
+            if upd == today:
+                return False, '今天 %s 已更新过，跳过（每小时唤醒自动去重）' % upd
+    except Exception:
+        pass
+    if bj_hour < 10:
+        return False, '北京时间 %02d:00，未到每天 10:00 的更新时间，跳过' % bj_hour
+    return True, ''
+
+# ═══════════════════════════════════════════════════════════════
 #  主程序：第 1 步抓取 → 第 2 步打包
 # ═══════════════════════════════════════════════════════════════
 
 def main():
     max_pages = 2
+    force = '--force' in sys.argv   # 手动补跑用 --force 跳过智能判断
+    if not force:
+        run, why = should_run_today()
+        if not run:
+            print(why)
+            return 0
     if '--pages' in sys.argv:
         try:
             max_pages = int(sys.argv[sys.argv.index('--pages') + 1])

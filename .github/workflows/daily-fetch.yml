@@ -2,9 +2,8 @@ name: daily-fetch
 
 on:
   schedule:
-    # 北京时间每天 10:30 = UTC 02:30
+    # 北京时间每天 10:30 = UTC 02:30（GitHub 定时偶发漏跑，5 分钟后再试一次，重复触发会自动跳过）
     - cron: '30 2 * * *'
-    # 兜底：GitHub Actions 定时偶发漏触发，5 分钟后再试一次（并发锁自动去重）
     - cron: '35 2 * * *'
   workflow_dispatch:
 
@@ -16,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  fetch:
+  update:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,11 +26,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run daily fetch
-        run: python scripts/fetch_all.py --pages 2
-
-      - name: Build embedded-data page
-        run: python scripts/build.py
+      # 一键脚本：抓取 5 个源 + 打包生成 index.html
+      - name: Run all-in-one script
+        run: python run_all.py
 
       - name: Commit and push
         run: |
@@ -39,7 +36,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           if git diff --quiet && git diff --cached --quiet; then
-            echo "No changes, skip commit"
+            echo "今天没有新内容，跳过提交"
           else
             git commit -m "每日自动更新 $(date -u +%Y-%m-%d)"
             git push

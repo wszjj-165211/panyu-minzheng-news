@@ -397,6 +397,27 @@ var READ_HIST_KEY = "mz_news_readhist_v1";
 var EMBEDDED_DATA = /*__DATA__*/null;
 var DATA = null;
 var curCat = "全部", curMonths = [], curTags = [], kw = "", sortMode = "desc", srcFilter = "all";
+/* 分类配色兜底：若数据 meta 缺失 cat_colors（防合并/构建丢失），运行时自动补齐，页面永不因缺字段崩溃 */
+var DEFAULT_CAT_COLORS = {
+  "社区慈善":     {"bg": "#FDE9DD", "text": "#C2551A"},
+  "养老服务":     {"bg": "#FBF0D9", "text": "#B07A1A"},
+  "婚姻登记":     {"bg": "#E9F4E4", "text": "#3E7C22"},
+  "未成年人保护": {"bg": "#E3EFFC", "text": "#1E66B0"},
+  "社会救助":     {"bg": "#ECECEF", "text": "#5A5A66"},
+  "基层治理":     {"bg": "#EDE5F9", "text": "#6B3FA0"},
+  "社会组织":     {"bg": "#E4E9F7", "text": "#3D54A8"},
+  "殡葬管理":     {"bg": "#E6EBEE", "text": "#4E6A7C"},
+  "区划地名":     {"bg": "#FCE8E2", "text": "#B05A30"},
+  "其他民政业务": {"bg": "#EFEFEA", "text": "#6E6E63"}
+};
+/* 数据自愈：确保 meta 必备字段齐全（cat_colors/dimensions），缺失即用默认补齐 */
+function ensureMeta(j){
+  if(!j.meta) j.meta = {};
+  if(!j.meta.cat_colors || typeof j.meta.cat_colors !== "object") j.meta.cat_colors = DEFAULT_CAT_COLORS;
+  if(!j.meta.dimensions) j.meta.dimensions = Object.keys(DEFAULT_CAT_COLORS);
+  if(!j.meta.total && j.records) j.meta.total = j.records.length;
+  return j;
+}
 /* 政府/官方机构报道判断（来源名含 政府/民政局/慈善会 视为政府报道，其余为媒体报道） */
 function isGovSource(r){
   var s = r.source || "";
@@ -453,7 +474,8 @@ function loadData(){
   var spin = '<div class="empty" style="padding:50px 0"><div style="width:26px;height:26px;border:3px solid var(--blue-l);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>正在加载新闻数据，请稍候…</div>';
   var failMsg = '<div class="empty">数据加载失败，请检查网络后重试（页面内置数据版不受影响）。</div>';
   function done(j){
-    DATA = j;
+    DATA = ensureMeta(j);
+    j = DATA;
     j.records.sort(function(a,b){ return sortKey(b.date) < sortKey(a.date) ? -1 : 1; });
     var upd = j.meta && (j.meta.updated_at || j.meta.generated_at) || "";
     if(upd) $("metaInfo").textContent = "共 " + j.meta.total + " 条 · 更新至 " + upd;
@@ -515,6 +537,7 @@ function silentRefresh(){
     tryCh[i]()
       .then(function(j){
         if(!j || !j.records) throw new Error("bad");
+        j = ensureMeta(j);
         var newUpd = (j.meta && (j.meta.updated_at || j.meta.generated_at)) || "";
         var newTot = (j.meta && j.meta.total) || j.records.length;
         if(newUpd === curUpd && newTot === curTot) return;   /* 无新数据：无感 */

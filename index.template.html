@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
-<title>番禺区民政新闻助手</title>
-<meta name="description" content="番禺区民政领域2026年官方新闻报道库，支持业务分类/主题标签检索、问答助手、统计概览，供民政系统文书部门撰写上报材料使用。">
-<meta property="og:title" content="番禺区民政新闻助手">
-<meta property="og:description" content="番禺区民政领域2026年官方新闻报道库 · 分类检索 / 问答助手 / 统计概览">
+<title>民政新闻助手</title>
+<meta name="description" content="民政领域2026年新闻报道库，支持业务分类/主题标签检索、问答助手、统计概览，供民政系统文书部门撰写上报材料使用。">
+<meta property="og:title" content="民政新闻助手">
+<meta property="og:description" content="民政领域2026年新闻报道库 · 分类检索 / 问答助手 / 统计概览">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://wszjj-165211.github.io/panyu-minzheng-news/logo.png">
 <style>
@@ -283,13 +283,13 @@ nav button.on{color:var(--blue-d)}
 
 <div id="gate">
   <div class="box">
-    <h1>番禺区民政新闻助手</h1>
-    <div class="sub">内部工作助手 · 请输入访问密码</div>
+    <h1>民政新闻助手</h1>
+    <div class="sub">工作助手 · 请输入访问密码</div>
     <input id="pw" type="password" placeholder="访问密码" autocomplete="current-password">
     <div class="err" id="pwErr"></div>
     <label class="remember"><input type="checkbox" id="pwRemember" checked> 记住密码，下次自动进入</label>
     <button id="pwBtn">进 入</button>
-    <div class="tip">供番禺区民政系统文书部门<br>撰写上报信息时快速检索使用</div>
+    <div class="tip">供民政系统文书部门<br>撰写上报信息时快速检索使用</div>
   </div>
 </div>
 
@@ -297,7 +297,7 @@ nav button.on{color:var(--blue-d)}
   <div id="pullWrap"><div class="pull-inner"><div class="pull-ic" id="pullIc"></div><span id="pullText">下拉刷新</span></div></div>
   <header>
     <div class="row">
-      <h1>番禺区民政新闻助手</h1>
+      <h1>民政新闻助手</h1>
       <span class="meta"><span id="metaInfo"></span><button id="refreshBtn" class="hbtn" title="刷新数据">↻ 刷新</button><button id="shareBtn" class="hbtn" title="分享给同事">⤴ 分享</button></span>
     </div>
     <div id="searchBox">
@@ -370,7 +370,7 @@ nav button.on{color:var(--blue-d)}
     <button id="closeShare" class="m-close" title="关闭">✕</button>
     <div class="m-title">分享给同事 / 发到微信群</div>
     <div class="posterBox">
-      <img src="share_poster.png" alt="番禺区民政新闻助手分享海报" id="posterImg">
+      <img src="share_poster.png" alt="民政新闻助手分享海报" id="posterImg">
     </div>
     <div class="posterTip">长按二维码图片 → 保存到相册 → 发送给朋友</div>
     <div class="posterSub">对方收到图片后，可长按识别图中的二维码直接进入应用</div>
@@ -418,7 +418,7 @@ function ensureMeta(j){
   if(!j.meta.total && j.records) j.meta.total = j.records.length;
   return j;
 }
-/* 政府/官方机构报道判断（来源名含 政府/民政局/慈善会 视为政府报道，其余为媒体报道） */
+/* 政府机构报道判断（来源名含 政府/民政局/慈善会 视为政府报道，其余为媒体报道） */
 function isGovSource(r){
   var s = r.source || "";
   return s.indexOf("政府")>=0 || s.indexOf("民政局")>=0 || s.indexOf("慈善会")>=0;
@@ -1109,14 +1109,14 @@ $("exportBtn").onclick = function(){
   var blob = new Blob(["\ufeff"+html], {type:"application/vnd.ms-excel;charset=utf-8"});
   var a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "番禺区民政新闻_" + new Date().toISOString().slice(0,10) + "_" + list.length + "条.xls";
+  a.download = "民政新闻_" + new Date().toISOString().slice(0,10) + "_" + list.length + "条.xls";
   document.body.appendChild(a); a.click();
   setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 800);
   flashBtn(this,"已导出 "+list.length+" 条表格");
 };
 
 /* ===== 问答助手（本地检索） ===== */
-var STOP = ["的","了","吗","呢","有","哪些","什么","关于","最新","新闻","报道","番禺","区","请","帮我","一下","怎么","如何","给我","推荐","看看","找找","有没有","相关","报道","条","哪些"];
+var STOP = ["的","了","吗","呢","有","哪些","什么","关于","最新","新闻","报道","区","请","帮我","一下","怎么","如何","给我","推荐","看看","找找","有没有","相关","报道","条","哪些"];
 var SUGGEST = ["5月有哪些养老新闻","慈善社区我先行 最新进展","一共收录了多少条","困境儿童 关爱","520/七夕 集体颁证","低保标准 相关报道"];
 
 function bootQA(){
@@ -1126,7 +1126,7 @@ function bootQA(){
     var t = e.target.closest(".s"); if(!t) return;
     sendQA(t.textContent);
   };
-  addMsg("你好，我是番禺区民政新闻检索助手。可问：某月有哪些养老/慈善/婚登新闻？某主题最新进展？直接输入关键词即可。", false);
+  addMsg("你好，我是民政新闻检索助手。可问：某月有哪些养老/慈善/婚登新闻？某主题最新进展？直接输入关键词即可。", false);
 }
 function addMsg(html, isUser){
   var box = document.createElement("div");
@@ -1203,7 +1203,7 @@ function qaItemHtml(r){
 function ask(q){
   q = (q||"").trim();
   /* 1. 问候 / 致谢 */
-  if(isGreet(q)) return "你好！我是番禺区民政新闻检索助手。可以这样问我：<br>· 「5月有哪些养老新闻？」<br>· 「慈善社区我先行 最新进展」<br>· 「低保 相关报道有多少条？」<br>· 「一共收录了多少条？」<br>也可以直接输入关键词。";
+  if(isGreet(q)) return "你好！我是民政新闻检索助手。可以这样问我：<br>· 「5月有哪些养老新闻？」<br>· 「慈善社区我先行 最新进展」<br>· 「低保 相关报道有多少条？」<br>· 「一共收录了多少条？」<br>也可以直接输入关键词。";
   var month = detectMonth(q), latest = isLatest(q), cat = intentCat(q), tag = intentTag(q);
   /* 2. 统计数量 */
   if(isCountQ(q)){
@@ -1346,7 +1346,7 @@ $("closeShare").onclick = function(){ $("shareModal").className = "modal-mask"; 
 $("shareModal").addEventListener("click", function(e){ if(e.target===this) this.className="modal-mask"; });
 /* 下载海报：优先走 blob 下载；微信 webview 等不支持时回退为新窗口打开，长按保存 */
 function savePoster(){
-  var btn = $("savePosterBtn"), src = $("posterImg").src, fname = "番禺区民政新闻助手海报.png";
+  var btn = $("savePosterBtn"), src = $("posterImg").src, fname = "民政新闻助手海报.png";
   function fallback(){
     try{ window.open(src, "_blank"); }catch(e){}
     btn.textContent = "已新开窗口，长按图片保存";

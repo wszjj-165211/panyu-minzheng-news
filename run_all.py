@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 ════════════════════════════════════════════════════════════════
-  番禺区民政新闻助手 · 一键构建脚本（整个系统唯一需要跑的代码）
+  民政新闻助手 · 一键构建脚本（整个系统唯一需要跑的代码）
 ════════════════════════════════════════════════════════════════
 
   这一个文件 = 原来的 fetch_all.py（抓取） + build.py（打包） 合并版
 
   它自动做两件事：
-    第 1 步【抓取】 去 5 个官方源网站，把当天的新新闻抓回来，
+    第 1 步【抓取】 去 5 个源网站，把当天的新新闻抓回来，
                      存进  data/news_data.json（新闻库）
     第 2 步【打包】 把新闻库塞进 index.template.html（页面模板），
                      生成 index.html（真正对外发布的网页）
@@ -121,7 +121,7 @@ def classify(title, text):
         labels.append(cat)
     return cat, list(dict.fromkeys(labels))
 
-# ---------- 源 1：番禺区慈善会官网 ----------
+# ---------- 源 1：区慈善会官网 ----------
 PYCS_COLS = [(2337, '媒体报道'), (2338, '机构资讯'), (2498, '系列报道'), (2501, '公示公告'), (2495, '党建要闻'), (2499, '月报')]
 
 def fetch_pycs():
@@ -142,11 +142,11 @@ def fetch_pycs():
             title = re.sub(r'\s+', ' ', m.group(3)).strip()
             cat, labels = classify(title, '')
             out.append({'date': date, 'title': title,
-                        'link': 'https://www.pycs.org.cn' + m.group(1), 'source': '番禺区慈善会官网',
+                        'link': 'https://www.pycs.org.cn' + m.group(1), 'source': '区慈善会官网',
                         'col': cname, 'category': cat, 'labels': labels, 'summary': ''})
     return out
 
-# ---------- 源 2：广州市民政局（只收标题带"番禺"的） ----------
+# ---------- 源 2：广州市民政局（只收标题带"区"的） ----------
 def fetch_mzj():
     out = []
     for page in (1, 2):
@@ -160,7 +160,7 @@ def fetch_mzj():
             if not m:
                 continue
             title = re.sub(r'\s+', ' ', m.group(3)).strip()
-            if '番禺' not in title:
+            if '区' not in title:
                 continue
             dm = re.search(r'(\d{4})-(\d{2})-(\d{2})', b)
             date = dm.group(0) if dm else ''
@@ -174,7 +174,7 @@ def fetch_mzj():
                         'col': '市民政局动态', 'category': cat, 'labels': labels, 'summary': ''})
     return out
 
-# ---------- 源 3：番禺区政府网（部门动态 + 16 个镇街） ----------
+# ---------- 源 3：区政府网（部门动态 + 16 个镇街） ----------
 BASE_PY = 'https://www.panyu.gov.cn'
 COLUMNS = [
     ('部门动态', 'zwgk/zfxxgkml/xxgkml/zwdt/bmdt'),
@@ -250,7 +250,7 @@ def fetch_panyu(max_pages=2):
                 cat, labels = classify(it['title'], text)
                 records.append({
                     'date': it['date'] or '', 'title': it['title'],
-                    'link': it['link'], 'source': '番禺区人民政府门户网站',
+                    'link': it['link'], 'source': '区人民政府门户网站',
                     'col': name, 'category': cat, 'labels': labels,
                     'summary': make_summary(text),
                 })
@@ -258,7 +258,7 @@ def fetch_panyu(max_pages=2):
                 break
     return records
 
-# ---------- 源 4：南方+ 番禺频道 ----------
+# ---------- 源 4：南方+ 频道 ----------
 NFAPP_COLUMN = 24957
 
 def norm_date(v):
@@ -299,11 +299,11 @@ def fetch_nfnews(max_pages=2):
                 continue
             cat, labels = classify(title, '')
             out.append({'date': date, 'title': title, 'link': link,
-                        'source': '南方+', 'col': '南方+番禺频道',
+                        'source': '南方+', 'col': '南方+频道',
                         'category': cat, 'labels': labels, 'summary': ''})
     return out
 
-# ---------- 源 5：新花城 番禺频道 ----------
+# ---------- 源 5：新花城 频道 ----------
 HC_SITE = '5e88c884e2ed4e7a9a8d5225c299f707'
 HC_CHANNEL = '1253f926cf4c4f27b961b7761bb6f672'
 HC_KWS = ['养老', '慈善', '捐赠', '儿童', '救助', '低保', '婚姻', '社工', '志愿', '社区治理', '残疾', '殡葬']
@@ -334,7 +334,7 @@ def fetch_huacheng(max_pages=3):
                     continue
                 cat, labels = classify(title, '')
                 out.append({'date': date, 'title': title, 'link': link,
-                            'source': '新花城', 'col': '新花城番禺频道',
+                            'source': '新花城', 'col': '新花城频道',
                             'category': cat, 'labels': labels, 'summary': ''})
     return out
 
@@ -477,7 +477,7 @@ def main():
     print('=' * 56)
     print('一键构建   ', datetime.datetime.now().strftime('%Y-%m-%d %H:%M'))
     print('=' * 56)
-    print('第 1 步：抓取 5 个官方源...')
+    print('第 1 步：抓取 5 个源...')
     total_added = 0
     total_added += merge(fetch_pycs(), '慈善会官网')
     total_added += merge(fetch_mzj(), '市民政局')

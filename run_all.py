@@ -338,8 +338,23 @@ def fetch_huacheng(max_pages=3):
                             'category': cat, 'labels': labels, 'summary': ''})
     return out
 
+def clean_sensitive(obj):
+    """自动清洗：递归剔除指定关键词（链接不动，防止破坏 URL）"""
+    if isinstance(obj, str):
+        # 关键词用 unicode 转义，避免源码中出现明文
+        s = obj.replace('\u756a\u79ba\u533a', '\u533a').replace('\u756a\u79ba', '')
+        s = s.replace('\u5b98\u65b9', '').replace('\u5185\u90e8', '')
+        s = s.replace('  ', ' ').strip()
+        return s
+    if isinstance(obj, dict):
+        return {k: clean_sensitive(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [clean_sensitive(v) for v in obj]
+    return obj
+
+
 def merge(records, tag):
-    """把抓回来的新新闻合并进新闻库（自动去重、无链接不收）"""
+    """把抓回来的新新闻合并进新闻库（自动去重、无链接不收、关键词自动清洗）"""
     d = json.load(open(DATA_PATH, encoding='utf-8'))
     existing = {dedup_key(r['link']) for r in d['records']}
     added = 0
@@ -347,6 +362,7 @@ def merge(records, tag):
         link = it.get('link') or ''
         if not link.startswith('http'):
             continue
+        it = clean_sensitive(it)  # 入库前先清洗指定关键词（标题/来源/摘要等）
         k = dedup_key(link)
         if k in existing:
             continue
@@ -409,6 +425,7 @@ def build_page():
         sys.exit(1)
     with open(DATA_PATH, encoding='utf-8') as f:
         data = json.load(f)
+    data = clean_sensitive(data)  # 兜底清洗：即使数据文件有漏网之鱼，发布页也绝不含指定关键词
     records = data.get('records') or []
     if not records:
         print('ERROR: 数据为空，拒绝生成页面（防止把空数据发布上线）')

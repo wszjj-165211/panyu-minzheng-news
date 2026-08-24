@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-08-23",
-  "total": 694,
-  "updated_at": "2026-08-23",
+  "generated_at": "2026-08-24",
+  "total": 697,
+  "updated_at": "2026-08-24",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -9516,6 +9516,46 @@
    "title": "培育本土志愿者 深化共建共治 石壁街开展志愿服务能力培训",
    "source": "新花城",
    "link": "https://huacheng.gz-cmc.com/pages/2026/08/21/8c206075c9bc442ca2848a44874f5ed4.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-08-24",
+   "title": "榜样｜冯庆华：以绿茵承侨心，以体育传大爱，二十载深耕慈善践初心",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16189.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-08-23",
+   "title": "开着“小跑车”进手术室：二院“游戏化”关怀守护儿童就医路",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/08/23/36deebdadac241ddb32217cc6b2d0d04.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "儿童"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-08-23",
+   "title": "以伴志愿者叶子涵：106小时志愿经历，把碎片拼成银河",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/08/23/11486bc81fa642ebab849aa2fc64d324.html",
    "category": "社会组织",
    "extra_cats": [],
    "labels": [

@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-08-29",
-  "total": 725,
-  "updated_at": "2026-08-29",
+  "generated_at": "2026-08-30",
+  "total": 726,
+  "updated_at": "2026-08-30",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -9928,6 +9928,20 @@
    "title": "同龄人讲给同龄人听！钟村街8名青少年志愿者直播宣讲禁毒知识",
    "source": "新花城",
    "link": "https://huacheng.gz-cmc.com/pages/2026/08/28/256d2cc0e0dd4950a7f3a8129fc445c4.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "未成年人"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-08-29",
+   "title": "化龙镇篮球公益课堂进社区 青少年乐享运动暑假",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/08/29/af019d61bda9437fa2d8d4d85c62ac38.html",
    "category": "未成年人保护",
    "extra_cats": [],
    "labels": [

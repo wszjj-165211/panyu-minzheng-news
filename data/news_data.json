@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-08-30",
-  "total": 726,
-  "updated_at": "2026-08-30",
+  "generated_at": "2026-08-31",
+  "total": 733,
+  "updated_at": "2026-08-31",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -9947,6 +9947,98 @@
    "labels": [
     "未成年人保护",
     "未成年人"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-08-31",
+   "title": "善治·桥南篇｜一堂课、一盆菜、一面墙背后的慈善“活水”",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16194.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-08-31",
+   "title": "西藏日喀则市吉隆县泥石流灾害 紧急援助项目募捐倡议书",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16193.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-08-31",
+   "title": "康养赋能晚年 这家山海护理院守护长者安康",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/08/31/625809b6dbdd495388db332d378769b4.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-08-30",
+   "title": "小谷围街综合养老服务中心：香甜烟火点亮银龄时光",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/08/30/0a231fa6235c4cd48fc65c25100c77eb.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-08-30",
+   "title": "“棋”乐无穷青安里 广州大学城举行第一届青少年围棋大赛",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/08/30/c9339e1d99224b63842fe2cfbdb3cfd1.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "未成年人"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-08-30",
+   "title": "“水陆”立体式护碧水 桥南街开展巡河护河志愿服务活动",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/08/30/a626ddfded7e45c894941dff7553f78d.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-08-30",
+   "title": "石碁镇大龙社区依托新时代文明实践站 常态化志愿服务落地见效",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/08/30/70335961016f4568bd1c3cf89b04463e.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

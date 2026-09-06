@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-09-05",
-  "total": 762,
-  "updated_at": "2026-09-05",
+  "generated_at": "2026-09-06",
+  "total": 764,
+  "updated_at": "2026-09-06",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -10424,6 +10424,32 @@
    "extra_cats": [],
    "labels": [
     "社会救助"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-05",
+   "title": "何以“善”城！解码“儒乡善城”全民慈善路径",
+   "source": "南方+",
+   "link": "https://static.nfnews.com/content/202609/05/c12791123.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【南方+自动抓取】南方+频道"
+  },
+  {
+   "date": "2026-09-05",
+   "title": "何以“善”城！解码“儒乡善城”全民慈善路径",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/05/a68b81c1b414483c8be167df43a3ca26.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

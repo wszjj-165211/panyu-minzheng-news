@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-09-06",
-  "total": 764,
-  "updated_at": "2026-09-06",
+  "generated_at": "2026-09-07",
+  "total": 767,
+  "updated_at": "2026-09-07",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -10450,6 +10450,46 @@
    "extra_cats": [],
    "labels": [
     "社区慈善"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "弘扬慈善文化践行慈善惠民——2026年“羊城慈善月”暖心启幕",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16197.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-06",
+   "title": "寓教于乐破解“带娃难” 大龙街公益亲子游园会让普惠托育“活”起来",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/06/ff882312345f48268bd08498c9cbb9d0.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "儿童"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-06",
+   "title": "暖心护航开学季！区石壁“花姐”志愿服务点亮广州南站文明窗口",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/06/fd95e1730667461d8e2fb6b0650273b7.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

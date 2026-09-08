@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-09-07",
-  "total": 767,
-  "updated_at": "2026-09-07",
+  "generated_at": "2026-09-08",
+  "total": 781,
+  "updated_at": "2026-09-08",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -10490,6 +10490,191 @@
    "extra_cats": [],
    "labels": [
     "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "善风润儒乡，“慈善之区”惠民生——2026年区“羊城慈善月”启幕",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16207.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "预告｜区慈善业务综合服务阵地开展公众开放日活动",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16206.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "“益起走·慈善月”——“番小慈”陪您践行爱心献能量活动已开始！",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16205.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "善行丨微光成炬漾禺山，消费即慈善照人间",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16203.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "第十三届“中华慈善奖”表彰名单公布",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16201.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "招募丨“禺善英才”2026区慈善行业人才培养计划学员招募",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16200.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "区慈善会暑期“慈善+志愿”系列服务圆满开展",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16199.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善",
+    "志愿服务"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "十年善行，禺山有爱：慈善接力点亮乡村振兴路",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16198.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "阳光慈善·账单零距离 ——区慈善会邀您一同见证每一份爱心的力量",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16204.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】公示公告"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "西藏日喀则市吉隆县泥石流灾害紧急援助项目 善款接收和使用情况公示（第二期）",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16202.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】公示公告"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "广州市南沙区民政局一行来访市社会组织培育发展基地",
+   "source": "广州市民政局官网",
+   "link": "http://mzj.gz.gov.cn/dt/mzdt/content/post_10993783.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
+   ],
+   "summary": "",
+   "note": "【市民政局自动抓取】市民政局动态"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "区审计局聚焦残疾人权益保障护航助残政策落地见效",
+   "source": "区人民政府门户网站",
+   "link": "http://www.panyu.gov.cn/zwgk/zfxxgkml/xxgkml/zwdt/bmdt/qsjj/content/post_10993769.html",
+   "category": "社会救助",
+   "extra_cats": [],
+   "labels": [
+    "社会救助",
+    "残疾人"
+   ],
+   "summary": "9月3日，区审计局专项调查审计组分别走访了市桥街康园工疗站、石楼镇康园工疗站以及区残疾人就业展能基地，实地查看各站点的场地设施配套建设及使用情况，详细了解学员日常参训、就业辅助、生活帮扶等服务开展情况，查看了机构管理制度、学员档案台账、服务记录等档案资料，通过与站点负责人、服务对象沟通交流，深入了解各站点在政策执行和运营管理中的堵点难点以及群众实际诉求，进一步摸清辖区康园工疗机构政策落实的…",
+   "note": "【区政府网自动抓取】部门动态"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "南村镇开展“轮胎月饼”亲子DIY涂鸦手作活动",
+   "source": "区人民政府门户网站",
+   "link": "http://www.panyu.gov.cn/zwgk/zfxxgkml/xxgkml/zwdt/zjxx/nczzf/content/post_10993765.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "儿童"
+   ],
+   "summary": "9月5日，南村镇新时代文明实践所联合中华美食城开展“轮胎月饼”亲子DIY涂鸦手作活动。 活动分为传统文化科普和创意手作两个环节。工作人员现场向亲子家庭讲解中秋传统习俗及节日由来等，带领大家深入感受中秋文化的深厚内涵。随后，各组家庭默契配合，对废旧轮胎进行裁剪、刷漆和创意涂鸦，制作出一个个造型独特的“轮胎月饼”，在动手实践中践行变废为宝的环保理念。 本次活动将传统中秋文化与绿色环保理念有机融合，增进…",
+   "note": "【区政府网自动抓取】南村镇政府"
+  },
+  {
+   "date": "2026-09-07",
+   "title": "赋能书香建设 中铁建工五建公司向区图书馆捐赠2.8万元实用物资",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/07/19bb494ea3944eb38a4e05a7f3af343e.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

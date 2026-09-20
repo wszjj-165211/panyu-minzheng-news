@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-09-19",
-  "total": 858,
-  "updated_at": "2026-09-19",
+  "generated_at": "2026-09-20",
+  "total": 860,
+  "updated_at": "2026-09-20",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -11684,6 +11684,32 @@
    "extra_cats": [],
    "labels": [
     "社区慈善"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-19",
+   "title": "迎中秋！小谷围街长者亲手制作中秋灯笼",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/19/4dcd2cde926a4f0f830650ea421e6edd.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-19",
+   "title": "月满中秋送关怀！区工作队开展中秋节前慰问",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/19/87286d66f8764a549aa216e0af44d5b4.html",
+   "category": "社会救助",
+   "extra_cats": [],
+   "labels": [
+    "社会救助"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

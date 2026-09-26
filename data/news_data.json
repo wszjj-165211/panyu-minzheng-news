@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-09-25",
-  "total": 920,
-  "updated_at": "2026-09-25",
+  "generated_at": "2026-09-26",
+  "total": 922,
+  "updated_at": "2026-09-26",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -12496,6 +12496,33 @@
    "extra_cats": [],
    "labels": [
     "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-25",
+   "title": "正式入驻“益起付”慈善消费捐平台 大学城慈善会两家会员企业获授“慈善商家”牌匾",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/25/901c12c970f64eaba18e587ebc39835f.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-25",
+   "title": "中秋送暖！走访慰问142户困境妇女儿童家庭",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/25/08a3395c39124c268917b8890c62d6a4.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "儿童"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

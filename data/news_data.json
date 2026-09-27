@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-09-26",
-  "total": 922,
-  "updated_at": "2026-09-26",
+  "generated_at": "2026-09-27",
+  "total": 925,
+  "updated_at": "2026-09-27",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -12523,6 +12523,46 @@
    "labels": [
     "未成年人保护",
     "儿童"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-26",
+   "title": "善心续暖月满南村 近500盒月饼送给困难群众和长者",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/26/d73127833fde48faa4485c0433cba988.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-26",
+   "title": "以专业护真爱 以新风润万家 专业婚姻家庭辅导守护暖心答卷",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/26/9267cea2f9dd467687c85ad18d72fd10.html",
+   "category": "婚姻登记",
+   "extra_cats": [],
+   "labels": [
+    "婚姻登记",
+    "婚俗改革"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-26",
+   "title": "红马甲守护团圆路！广州南站地区党员志愿者中秋节暖心护航旅客出行",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/26/116304aa0835415db1add19149450952.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

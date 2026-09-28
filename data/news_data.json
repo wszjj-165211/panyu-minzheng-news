@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-09-27",
-  "total": 925,
-  "updated_at": "2026-09-27",
+  "generated_at": "2026-09-28",
+  "total": 929,
+  "updated_at": "2026-09-28",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -12563,6 +12563,60 @@
    "extra_cats": [],
    "labels": [
     "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-28",
+   "title": "跨城取经拓思路 数智赋能促善治——区慈善会赴深圳参访学习",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16221.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-09-24",
+   "title": "西藏日喀则市吉隆县泥石流灾害紧急援助项目 善款接收和使用情况公示（第五期）",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16222.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】公示公告"
+  },
+  {
+   "date": "2026-09-27",
+   "title": "科技为翼 勇敢逐梦 第42届区青少年科技创新大赛举行",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/27/870857c6e0af4bc89951a18435b525aa.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "未成年人"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-09-27",
+   "title": "这场科普活动，带青少年近距离感受光电科技",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/09/27/43e754cdd9c74b7cbf4dbefacd1d8576.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "未成年人"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

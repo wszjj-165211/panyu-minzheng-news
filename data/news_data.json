@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-02",
-  "total": 962,
-  "updated_at": "2026-10-02",
+  "generated_at": "2026-10-03",
+  "total": 963,
+  "updated_at": "2026-10-03",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -13050,6 +13050,19 @@
    "labels": [
     "未成年人保护",
     "儿童"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-02",
+   "title": "多彩活动贺国庆！石碁镇“1号服务日”文艺、敬老、义诊齐上阵",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/02/08a0fc06b1f14696908d408938176631.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

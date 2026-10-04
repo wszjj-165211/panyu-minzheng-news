@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-03",
-  "total": 963,
-  "updated_at": "2026-10-03",
+  "generated_at": "2026-10-04",
+  "total": 965,
+  "updated_at": "2026-10-04",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -13063,6 +13063,32 @@
    "extra_cats": [],
    "labels": [
     "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-03",
+   "title": "党员践诺送温暖，月满家国庆祥和——区新造镇组织新兴领域党组织开展节日暖心慰问服务活动",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/03/f71c59fecb9742fbb80be437a5c560ed.html",
+   "category": "社会救助",
+   "extra_cats": [],
+   "labels": [
+    "社会救助"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-03",
+   "title": "区新造镇开展“名儒善乡·和美新造”惠民志愿服务活动",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/03/6c09393c5b234aeca505f4c981418814.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

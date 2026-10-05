@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-04",
-  "total": 965,
-  "updated_at": "2026-10-04",
+  "generated_at": "2026-10-05",
+  "total": 966,
+  "updated_at": "2026-10-05",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -13089,6 +13089,20 @@
    "extra_cats": [],
    "labels": [
     "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-04",
+   "title": "送温暖，更送机会！广州大学城志愿者协会携手爱心企业，助力残疾人创业团队圆梦",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/04/d542f0e64f2742de9820c3cd2724fe7d.html",
+   "category": "社会救助",
+   "extra_cats": [],
+   "labels": [
+    "社会救助",
+    "残疾人"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

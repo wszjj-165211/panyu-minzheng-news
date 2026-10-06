@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-05",
-  "total": 966,
-  "updated_at": "2026-10-05",
+  "generated_at": "2026-10-06",
+  "total": 967,
+  "updated_at": "2026-10-06",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -13103,6 +13103,19 @@
    "labels": [
     "社会救助",
     "残疾人"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-05",
+   "title": "从舞狮到合唱，市桥街爱心团队为椿萱茂敬老院长者送上“国庆文艺大礼包”",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/05/7f5b227d11a04141876c06acae8996b2.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

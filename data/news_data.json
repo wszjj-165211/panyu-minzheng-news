@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-10",
-  "total": 984,
-  "updated_at": "2026-10-10",
+  "generated_at": "2026-10-11",
+  "total": 989,
+  "updated_at": "2026-10-11",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -13341,6 +13341,72 @@
    "labels": [
     "未成年人保护",
     "儿童"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-10",
+   "title": "区民政局开展国庆假期养老机构安全生产专项检查",
+   "source": "区人民政府门户网站",
+   "link": "http://www.panyu.gov.cn/zwgk/zfxxgkml/xxgkml/zwdt/bmdt/qmzj/content/post_11035409.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "国庆期间，区民政局对辖区内7家养老机构开展安全生产专项检查。 检查人员详细检查消防设施配备、消防器材有效期、疏散通道及安全出口畅通情况，重点抽查消防控制室人员在岗值守、设备运行、台账登记落实情况，随后到老人居住区查看用电安全、火源管理、刀具存放等日常管理细节，并到食堂检查食材储存、食品留样及环境卫生情况。 检查人员要求：国庆假期养老机构务必压紧压实安全主体责任，一是严格落实每日自查制度，围绕消防、…",
+   "note": "【区政府网自动抓取】部门动态"
+  },
+  {
+   "date": "2026-10-10",
+   "title": "医养融合 健康护航 何贤纪念医院与沙湾敬老中心正式签约",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/10/ef4d4171ff5246d5999740e3adb11cbf.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-10",
+   "title": "民生微实事|小小地垫铺就“放心路”！区南村镇兴业社区儿童乐园地垫换新获赞",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/10/391fd1de5e9b4a1cbee5b02b6e5e747b.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "儿童"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-10",
+   "title": "山海情绵，医路同行！医疗专家“组团”下沉威宁基层卫生院",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/10/1de0e3a969e248daa2e7b67007dc217f.html",
+   "category": "基层治理",
+   "extra_cats": [],
+   "labels": [
+    "基层治理"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-10",
+   "title": "一抹“志愿红” 温暖团圆路 ！广州南站党员先锋志愿服务队护航假期大客流出行",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/10/85dd486965a441aaa38e3046e0622c6b.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-11",
-  "total": 989,
-  "updated_at": "2026-10-11",
+  "generated_at": "2026-10-12",
+  "total": 1005,
+  "updated_at": "2026-10-12",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -13407,6 +13407,214 @@
    "extra_cats": [],
    "labels": [
     "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【广州新闻联播】汇聚全城向善力量 “羊城慈善月”主题活动启幕",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16237.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【中国报道】弘扬慈善文化 践行慈善惠民——2026年“羊城慈善月”暖心启幕",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16236.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【新快报】崇德向善成为城市底色 今年“羊城慈善月”暖心启幕",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16235.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【珠江新闻】聚焦民生 “羊城慈善月”将推出200多项慈善活动",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16234.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【广东新闻广播】2026年“羊城慈善月”暖心启幕，200多项活动等你参与",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16233.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【人民网】弘扬慈善文化 践行慈善惠民——2026年“羊城慈善月”暖心启幕",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16232.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【央广网客户端】2026年“羊城慈善月”启幕 持续擦亮“慈善之城”品牌",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16231.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【广州广播】2026年“羊城慈善月”暖心启幕",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16230.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【穗产经】2026年“羊城慈善月”主题活动启动，全城开展39项重点活动",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16229.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【央视影音】2026年“羊城慈善月”主题活动启动",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16228.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【羊城晚报•羊城派】把“一老一小”关爱带到社区一线，“羊城慈善月”来到广州街坊“家门口”",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16227.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【广东民政头条】2026年“羊城慈善月”启幕，将推出200余项活动",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16226.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "【央视网】2026年“羊城慈善月”主题活动启动",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16225.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】媒体报道"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "接诉即办，两区联动助力失散兄弟团聚",
+   "source": "广州市民政局官网",
+   "link": "http://mzj.gz.gov.cn/dt/mzdt/content/post_11036876.html",
+   "category": "其他民政业务",
+   "extra_cats": [],
+   "labels": [
+    "其他民政业务"
+   ],
+   "summary": "",
+   "note": "【市民政局自动抓取】市民政局动态"
+  },
+  {
+   "date": "2026-10-12",
+   "title": "广州市精康综合指导中心联动各区开展2026年世界精神卫生日系列活动",
+   "source": "广州市民政局官网",
+   "link": "http://mzj.gz.gov.cn/dt/mzdt/content/post_11036861.html",
+   "category": "其他民政业务",
+   "extra_cats": [],
+   "labels": [
+    "其他民政业务"
+   ],
+   "summary": "",
+   "note": "【市民政局自动抓取】市民政局动态"
+  },
+  {
+   "date": "2026-10-11",
+   "title": "15份慰问品+用电安全“体检”，市桥街侨联社区这份敬老礼包很实在",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/11/d801c96023534258afde3693a665d903.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

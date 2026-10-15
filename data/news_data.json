@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-14",
-  "total": 1016,
-  "updated_at": "2026-10-14",
+  "generated_at": "2026-10-15",
+  "total": 1023,
+  "updated_at": "2026-10-15",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -13754,6 +13754,97 @@
    "title": "完善广东科普志愿服务标准体系 《科普志愿服务评价》团体标准获批发布",
    "source": "新花城",
    "link": "https://huacheng.gz-cmc.com/pages/2026/10/13/8bc25cd544f84501bbc6f784d17888c4.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-15",
+   "title": "羊城慈善月|3.4亿颗爱心能量，走出一条全民慈善的温暖之路",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16241.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-10-15",
+   "title": "善行边疆丨跨越三千公里的慈善之约",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16240.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-10-15",
+   "title": "西藏日喀则市吉隆县泥石流灾害紧急援助项目 善款接收和使用情况公示（第六期）",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16242.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】公示公告"
+  },
+  {
+   "date": "2026-10-14",
+   "title": "新造镇总工会走访企业调研基层工会组织建设工作",
+   "source": "区人民政府门户网站",
+   "link": "http://www.panyu.gov.cn/zwgk/zfxxgkml/xxgkml/zwdt/zjxx/xzzzf/content/post_11044494.html",
+   "category": "基层治理",
+   "extra_cats": [],
+   "labels": [
+    "基层治理"
+   ],
+   "summary": "为进一步加强基层工会组织建设，切实维护职工合法权益，10月12日下午，新造镇总工会到辖区某教育科技有限公司调研基层工会组织建设工作，新造镇总工会分管领导及工作人员参加。 座谈会上，调研人员围绕组建基层工会的重要意义进行深入阐述，指出工会组织在促进企业健康发展、构建和谐劳动关系等方面具有不可替代的桥梁纽带作用。调研人员就工会组建相关政策法规、程序步骤等进行详细解读，并介绍企业工会成立后对企业和职工双…",
+   "note": "【区政府网自动抓取】新造镇政府"
+  },
+  {
+   "date": "2026-10-15",
+   "title": "大龙街金海岸社区再次点亮校园师生“榕树下的微心愿”",
+   "source": "区人民政府门户网站",
+   "link": "http://www.panyu.gov.cn/zwgk/zfxxgkml/xxgkml/zwdt/zjxx/dljdbsc/content/post_11047062.html",
+   "category": "社会救助",
+   "extra_cats": [],
+   "labels": [
+    "社会救助"
+   ],
+   "summary": "继校门口防护铁马更新就位之后，10月14日，金海岸学校又一桩师生和家长期盼的“榕树下的微心愿”顺利落地，校园安全防护再添一道暖心屏障。 大龙街金海岸学校教学楼首层大堂立柱较多，课间学生活动、人员往来密集，立柱虽已做弯角处理，但材质偏硬，仍存在磕碰受伤风险。该校师生、家长通过大龙街“榕树下的微心愿”民生服务机制反馈，希望为立柱加装防撞条，守护学生安全。 此前，大龙街金海岸社区党委联合大龙街商会已完成…",
+   "note": "【区政府网自动抓取】大龙街道办事处"
+  },
+  {
+   "date": "2026-10-14",
+   "title": "童心暖夕阳 新造镇小小志愿者进社区送温暖",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/14/0e6d186c4fea4dffb23b34acea4d110e.html",
+   "category": "社会组织",
+   "extra_cats": [],
+   "labels": [
+    "社会组织"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-14",
+   "title": "互学互鉴促提升 志愿服务团队到石碁镇大龙社区交流",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/14/db7d5d4b55b946c1bbfa936512688964.html",
    "category": "社会组织",
    "extra_cats": [],
    "labels": [

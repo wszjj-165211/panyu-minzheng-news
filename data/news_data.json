@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-24",
-  "total": 1080,
-  "updated_at": "2026-10-24",
+  "generated_at": "2026-10-25",
+  "total": 1081,
+  "updated_at": "2026-10-25",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -14595,6 +14595,19 @@
    "extra_cats": [],
    "labels": [
     "社区慈善"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-24",
+   "title": "警惕街头推销、土法偏方！区钟村街为老年居民送上防毒指南",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/24/7b8d6a61b38240a4a107077154689546.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

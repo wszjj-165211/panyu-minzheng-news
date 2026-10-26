@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-10-25",
-  "total": 1081,
-  "updated_at": "2026-10-25",
+  "generated_at": "2026-10-26",
+  "total": 1089,
+  "updated_at": "2026-10-26",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -14604,6 +14604,111 @@
    "title": "警惕街头推销、土法偏方！区钟村街为老年居民送上防毒指南",
    "source": "新花城",
    "link": "https://huacheng.gz-cmc.com/pages/2026/10/24/7b8d6a61b38240a4a107077154689546.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-26",
+   "title": "关注丨全国慈善标准化工作组成立大会暨2026年慈善标准化建设与评估交流会在京召开，邓红兵获聘为全国慈善标",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16251.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-10-26",
+   "title": "西藏那曲市巴青县地震灾害 紧急援助募捐倡议书",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16250.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】机构资讯"
+  },
+  {
+   "date": "2026-10-26",
+   "title": "2026年区“禺山有爱 慈善为民”活动 项目善款接收和使用情况公示",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16253.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】公示公告"
+  },
+  {
+   "date": "2026-10-26",
+   "title": "2026年我为绿美添新绿活动项目 善款接收和使用情况公示",
+   "source": "区慈善会官网",
+   "link": "https://www.pycs.org.cn/article-16252.html",
+   "category": "社区慈善",
+   "extra_cats": [],
+   "labels": [
+    "社区慈善"
+   ],
+   "summary": "",
+   "note": "【慈善会官网自动抓取】公示公告"
+  },
+  {
+   "date": "2026-10-26",
+   "title": "情暖重阳护银龄 金婚银婚颂家风——荔湾区举办敬老月活动暨金婚银婚纪念典礼",
+   "source": "广州市民政局官网",
+   "link": "http://mzj.gz.gov.cn/dt/mzdt/content/post_11068254.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "",
+   "note": "【市民政局自动抓取】市民政局动态"
+  },
+  {
+   "date": "2026-10-26",
+   "title": "大龙街开展“重阳公益行·微愿夕阳暖”长者微心愿爱心行动",
+   "source": "区人民政府门户网站",
+   "link": "http://www.panyu.gov.cn/zwgk/zfxxgkml/xxgkml/zwdt/zjxx/dljdbsc/content/post_11068283.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "金秋送爽，丹桂飘香，10月23日，大龙街联合社工站及爱心企业共同开展“重阳公益行·微愿夕阳暖”长者微心愿爱心行动，切实为辖区16户困难长者实现微心愿，大力弘扬敬老爱老的传统美德。本次活动所需帮扶物资由爱心企业全额赞助，涵盖电饭煲、躺椅、电风扇等生活必需品，以及保暖内衣、蛋白粉、安全扶手、拐杖等适老化康养物资。所有物资均依据社工常态化入户走访排查结果，精准对接困难长者实际需求，确保帮扶工作靶向精准、…",
+   "note": "【区政府网自动抓取】大龙街道办事处"
+  },
+  {
+   "date": "2026-10-25",
+   "title": "区市桥街开展亲子沟通公益讲座",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/25/dfba019e8b934542959da47da4d9e8d9.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "儿童"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-10-25",
+   "title": "明月关助联动多方走进区市桥街晒布社区，探访慰问17名长者",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/10/25/88965b9e85024b3999e64a24d6d2deff.html",
    "category": "养老服务",
    "extra_cats": [],
    "labels": [

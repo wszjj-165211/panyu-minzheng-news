@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-11-21",
-  "total": 1231,
-  "updated_at": "2026-11-21",
+  "generated_at": "2026-11-22",
+  "total": 1233,
+  "updated_at": "2026-11-22",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -16593,6 +16593,34 @@
    "extra_cats": [],
    "labels": [
     "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-11-22",
+   "title": "书香护苗润童心！区举办“扫黄打非·护苗成长”青少年主题阅读分享会",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/11/22/1b09bc5bffb945cba30372e1f9eec0d6.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "未成年人"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-11-22",
+   "title": "从“被服务”到“服务者” 2026年区第九届普特融合亲子运动会举行",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/11/22/12ac8e8bb7b3454f9a8e7cacec6a9125.html",
+   "category": "未成年人保护",
+   "extra_cats": [],
+   "labels": [
+    "未成年人保护",
+    "儿童"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"

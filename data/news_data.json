@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "民政新闻助手",
-  "generated_at": "2026-11-27",
-  "total": 1258,
-  "updated_at": "2026-11-27",
+  "generated_at": "2026-11-28",
+  "total": 1261,
+  "updated_at": "2026-11-28",
   "dimensions": [
    "养老服务",
    "婚姻登记",
@@ -16950,6 +16950,45 @@
    "extra_cats": [],
    "labels": [
     "社会救助"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-11-27",
+   "title": "石楼、化龙跨镇网格接力 守护九旬走失老人平安归家",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/11/27/8230a0e105fc426a856681a46f6622a7.html",
+   "category": "基层治理",
+   "extra_cats": [],
+   "labels": [
+    "基层治理"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-11-27",
+   "title": "让老街坊在家门口安享幸福晚年！市桥街打造老旧社区老年友好 “先锋样板”",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/11/27/fceafd82837248909a95c4d3eede5498.html",
+   "category": "养老服务",
+   "extra_cats": [],
+   "labels": [
+    "养老服务"
+   ],
+   "summary": "",
+   "note": "【新花城自动抓取】新花城频道"
+  },
+  {
+   "date": "2026-11-27",
+   "title": "把课堂搬到乡村 把论文写在基层 华工突击队助力小谷围 “百千万工程”",
+   "source": "新花城",
+   "link": "https://huacheng.gz-cmc.com/pages/2026/11/27/50d3ddd890904485a0df91c3fc5d73d9.html",
+   "category": "基层治理",
+   "extra_cats": [],
+   "labels": [
+    "基层治理"
    ],
    "summary": "",
    "note": "【新花城自动抓取】新花城频道"
